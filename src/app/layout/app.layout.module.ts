@@ -17,6 +17,12 @@ import { AppFooterComponent } from './app.footer.component';
 import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
+import { CustomersComponent } from './pages/customers/customers.component';
+import { ViewAppoinmentComponent } from './pages/view-appoinment/view-appoinment.component';
+import {ButtonModule} from "primeng/button";
+import {TableModule} from "primeng/table";
+import { AddOrderDetailsComponent } from './pages/view-appoinment/add-order-details/add-order-details.component';
+import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
     declarations: [
@@ -26,21 +32,27 @@ import { AppLayoutComponent } from "./app.layout.component";
         AppMenuComponent,
         AppSidebarComponent,
         AppLayoutComponent,
+        CustomersComponent,
+        ViewAppoinmentComponent,
+        AddOrderDetailsComponent,
     ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        InputTextModule,
-        SidebarModule,
-        BadgeModule,
-        RadioButtonModule,
-        InputSwitchModule,
-        RippleModule,
-        RouterModule,
-        AppConfigModule
-    ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    InputTextModule,
+    SidebarModule,
+    BadgeModule,
+    RadioButtonModule,
+    InputSwitchModule,
+    RippleModule,
+    RouterModule,
+    AppConfigModule,
+    ButtonModule,
+    TableModule,
+    DropdownModule
+  ],
     exports: [AppLayoutComponent]
 })
 export class AppLayoutModule { }

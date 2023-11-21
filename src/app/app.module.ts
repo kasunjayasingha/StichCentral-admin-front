@@ -20,6 +20,7 @@ import {MessageService} from 'primeng/api';
 import {CalendarModule} from 'primeng/calendar';
 import {SplitterModule} from 'primeng/splitter';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ToastModule,
     CalendarModule,
     SplitterModule,
+    BadgeModule,
     SweetAlert2Module.forRoot(),
   ],
   providers: [MessageService],

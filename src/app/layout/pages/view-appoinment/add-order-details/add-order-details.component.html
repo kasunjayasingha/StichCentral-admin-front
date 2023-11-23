@@ -1,36 +1,145 @@
 <div class="grid">
   <div class="col-12">
 
-      <h5>Advanced</h5>
-      <div class="p-fluid p-formgrid grid">
-        <div class="field col-12 md:col-6">
-          <label htmlFor="firstname2">Firstname</label>
-          <input pInputText id="firstname2" type="text" />
-        </div>
-        <div class="field col-12 md:col-6">
-          <label htmlFor="lastname2">Lastname</label>
-          <input pInputText id="lastname2" type="text" />
-        </div>
-<!--        <div class="field col-12">-->
-<!--          <label htmlFor="address">Address</label>-->
-<!--          <input pInputTextarea id="address" rows="4" />-->
-<!--        </div>-->
-        <div class="field col-12 md:col-6">
-          <label htmlFor="city">City</label>
-          <input pInputText id="city" type="text" />
-        </div>
-<!--        <div class="field col-12 md:col-3">-->
-<!--          <label htmlFor="state">State</label>-->
-<!--          <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>-->
-<!--        </div>-->
-        <div class="field col-12 md:col-3">
-          <label htmlFor="zip">Zip</label>
-          <input pInputText id="zip" type="text" />
+    <h5>Advanced</h5>
+    <div class="p-fluid p-formgrid grid">
+      <div class="field col-12 md:col-6">
+        <label htmlFor="firstname2">Firstname</label>
+        <input [value]="appoinmentInfo.customer.first_name" disabled id="firstname2" pInputText type="text"/>
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="lastname2">Lastname</label>
+        <input [value]="appoinmentInfo.customer.last_name" disabled id="lastname2" pInputText type="text"/>
+      </div>
+      <!--        <div class="field col-12">-->
+      <!--          <label htmlFor="address">Address</label>-->
+      <!--          <input pInputTextarea id="address" rows="4" />-->
+      <!--        </div>-->
+      <div class="field col-12 md:col-6">
+        <label htmlFor="city">Email</label>
+        <input [value]="appoinmentInfo.customer.email" disabled id="email" pInputText type="email"/>
+      </div>
+      <!--        <div class="field col-12 md:col-3">-->
+      <!--          <label htmlFor="state">State</label>-->
+      <!--          <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>-->
+      <!--        </div>-->
+      <div class="field col-12 md:col-3">
+        <label htmlFor="zip">Phone no.</label>
+        <input [value]="appoinmentInfo.customer.phone_no" disabled id="phone" pInputText type="text"/>
+      </div>
+
+      <div class="field col-12 md:col-3">
+        <label htmlFor="zip">Appoinment Date</label>
+        <input [value]="appoinmentInfo.appointment_date" disabled id="appoinmentDate" pInputText type="text"/>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <label htmlFor="dis">Description</label>
+        <textarea [value]="appoinmentInfo.description" cols="30" disabled pInputText rows="4"></textarea>
+      </div>
+
+      <div class="field col-12 md:col-3">
+        <label htmlFor="zip">Design</label>
+        <div class="flex flex-wrap gap-2">
+          <button class="p-button-rounded p-button-info" icon="pi pi-file" pButton pRipple type="button"></button>
         </div>
 
       </div>
-    <button pButton label="Submit"></button>
+
+    </div>
+    <div class="flex justify-content-between flex-column sm:flex-row">
+      <div class="flex gap-2">
+        <div *ngIf="appoinmentInfo.status== 'COMPLETED'">
+          <button icon="pi pi-external-link" label="View Order" pButton></button>
+        </div>
+        <div *ngIf="appoinmentInfo.status== 'PENDING'">
+          <button (click)="display=true" icon="pi pi-external-link" label="Make Order" pButton></button>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <div *ngIf="appoinmentInfo.status== 'PENDING'">
+          <button (click)="confirmPosition('bottom-left')" class="p-button-danger" icon="pi pi-times-circle"
+                  label="Cancel"
+                  pButton pRipple
+                  type="button"></button>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>
+
+<!--<p-confirmDialog [style]="{width: '350px'}" acceptButtonStyleClass="p-button-text" header="Confirmation"-->
+<!--                 icon="pi pi-exclamation-triangle"-->
+<!--                 key="confirm1" message="Are you sure you want to proceed?"-->
+<!--                 rejectButtonStyleClass="p-button-text"></p-confirmDialog>-->
+<p-toast></p-toast>
+<p-confirmDialog [position]="position" [style]="{ width: '25vw' }" acceptButtonStyleClass="p-button-text"
+                 header="Confirmation"
+                 key="positionDialog" rejectButtonStyleClass="p-button-text"
+                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+
+
+<p-dialog [(visible)]="display" [breakpoints]="{'960px': '100vw'}"
+          [contentStyle]="{'max-height': '500px', 'overflow': 'auto'}" [modal]="true"
+          [resizable]="true" [style]="{width: '60vw'}" header="Make Order"
+          showEffect="fade">
+  <div class="p-fluid p-formgrid grid">
+    <div class="field col-12 md:col-6">
+      <label htmlFor="firstname2">Order Type</label>
+      <p-dropdown (onChange)="selectDropDown()" [(ngModel)]="selectedOrderType" [options]="orderType"
+                  optionLabel="name"></p-dropdown>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="lastname2">Material</label>
+      <input id="material" pInputText type="text"/>
+    </div>
+    <!--        <div class="field col-12">-->
+    <!--          <label htmlFor="address">Address</label>-->
+    <!--          <input pInputTextarea id="address" rows="4" />-->
+    <!--        </div>-->
+    <div class="field col-12 md:col-6">
+      <label htmlFor="city">Quantity</label>
+      <input id="quantity" pInputText type="number"/>
+    </div>
+    <!--        <div class="field col-12 md:col-3">-->
+    <!--          <label htmlFor="state">State</label>-->
+    <!--          <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>-->
+    <!--        </div>-->
+
+    <div class="field col-12 md:col-3">
+      <label htmlFor="dis">Advance</label>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon">Rs</span>
+        <input pInputText placeholder="Advance" type="text">
+        <span class="p-inputgroup-addon">.00</span>
+      </div>
+    </div>
+
+
+    <div class="field col-12 md:col-3">
+      <label htmlFor="zip">Swing Place</label>
+      <p-dropdown (onChange)="selectPlaceDropDown()" [(ngModel)]="selectedSwingPlace" [options]="swingPlace"
+                  optionLabel="name"></p-dropdown>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label htmlFor="zip">Dispatch Date</label>
+      <p-calendar [showIcon]="true" appendTo="body" dateFormat="dd/mm/yy" inputId="icon"
+                  placeholder="Choose a Date"></p-calendar>
+    </div>
+
+
+    <div class="field col-12 md:col-6">
+      <label htmlFor="dis">Description</label>
+      <textarea cols="30" disabled pInputText rows="4"></textarea>
+    </div>
+
+
+  </div>
+  <ng-template pTemplate="footer">
+    <button (click)="display=false" class="p-button-outlined" icon="pi pi-check" label="Add" pButton></button>
+  </ng-template>
+</p-dialog>
+
 

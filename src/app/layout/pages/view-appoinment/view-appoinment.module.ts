@@ -5,6 +5,8 @@ import { ViewAppoinmentRoutingModule } from './view-appoinment-routing.module';
 import { ViewTableComponent } from './view-table/view-table.component';
 import {SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import {TableModule} from "primeng/table";
     CommonModule,
     ViewAppoinmentRoutingModule,
     SharedModule,
-    TableModule
+    TableModule,
+    DropdownModule,
+    FormsModule
   ]
 })
 export class ViewAppoinmentModule { }

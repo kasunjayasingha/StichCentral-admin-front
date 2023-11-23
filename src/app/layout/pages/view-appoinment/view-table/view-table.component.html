@@ -1,18 +1,55 @@
-<p-table [value]="appoinments" styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="appoinments"
+         [paginator]="true"
+         [rows]="5"
+         [showCurrentPageReport]="true"
+         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [rowsPerPageOptions]="[5, 10, 30]"
+         styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-between flex-column sm:flex-row">
+      <div >
+        <span>Appointments: </span>
+        <span [class]="'appoinment-badge status-' + status.toLowerCase()">{{status}} </span>
+      </div>
+      <div >
+        <p-dropdown [options]="dropdownItems" [(ngModel)]="selectedStatus" (onChange)="selectDropDown()" optionLabel="name" ></p-dropdown>
+      </div>
+    </div>
+
+
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th>Code</th>
+      <th>No.</th>
       <th>Name</th>
-      <th>Category</th>
-      <th>Quantity</th>
+      <th>Email</th>
+      <th>Appoinment Date</th>
+      <th>Type</th>
+      <th>View</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-product>
+  <ng-template pTemplate="body" let-appoinment let-index="rowIndex">
     <tr>
-      <td>{{product.code}}</td>
-      <td>{{product.name}}</td>
-      <td>{{product.category}}</td>
-      <td>{{product.quantity}}</td>
+      <td>{{index + 1 }}</td>
+      <td>{{appoinment.customer.first_name}} {{appoinment.customer.last_name}}</td>
+      <td>{{appoinment.customer.email}}</td>
+      <td>{{appoinment.appointment_date | date: 'dd/MM/yyyy'}}</td>
+      <td>
+        <div *ngIf="appoinment.type == 'ONLINE'">
+          <span class="appoinment-badge status-online">{{appoinment.type}}</span>
+        </div>
+
+        <div *ngIf="appoinment.type == 'IN_PERSON'">
+          <span class="appoinment-badge status-physical">{{appoinment.type}}</span>
+        </div>
+      </td>
+      <td>
+        <button (click) = "viewAppoinment(appoinment)" routerLink="./add-order-details">
+          <i class="pi pi-eye text-green-500" ></i>
+        </button>
+
+      </td>
+
     </tr>
   </ng-template>
 </p-table>

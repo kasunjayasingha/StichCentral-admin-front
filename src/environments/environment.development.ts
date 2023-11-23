@@ -16,10 +16,8 @@ export const environment = {
   CUSTOMER_URL: {
     GET_ALL_CUSTOMER: `${API_BASE_URL_COUSTOMER}/getAllCustomer`,
   },
-  APPOINMENT_STEP_URL: {
-    ADDAPPOINMENT: `${API_BASE_URL_APPOINTMENT}/saveAppoinment`,
-    GETAPPOINMENT: `${API_BASE_URL_APPOINTMENT}/getAppoinment/`,
-    UPDATEAPPOINMENT: `${API_BASE_URL_APPOINTMENT}/updateAppoinment`,
-    DELETEAPPOINMENT: `${API_BASE_URL_APPOINTMENT}/deleteAppoinment/`,
+  APPOINMENT_URL: {
+    GET_ALL_APPOINMENT: `${API_BASE_URL_APPOINTMENT}/getAllAppoinment/`,
+    CANCEL_APPOINMENT: `${API_BASE_URL_APPOINTMENT}/cancelAppoinment`,
   },
 };

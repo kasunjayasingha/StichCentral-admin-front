@@ -9,8 +9,10 @@ import {CustomerDTO} from "../../../../DTO/customerDTO";
   templateUrl: './view-customers.component.html',
   styleUrls: ['./view-customers.component.scss']
 })
-export class ViewCustomersComponent implements OnInit{
+export class ViewCustomersComponent implements OnInit {
   customers: CustomerDTO[] = [];
+  protected readonly indexedDB = indexedDB;
+
   constructor(
     private _customerService: CustomerService,
     private messageService: MessageService,
@@ -19,34 +21,17 @@ export class ViewCustomersComponent implements OnInit{
 
   ngOnInit(): void {
     this.getAllCustomers();
-    // this.customers = [
-    //   {
-    //     id: '1000',
-    //     code: 'f230fh0g3',
-    //     name: 'Bamboo Watch',
-    //     description: 'Product Description',
-    //     image: 'bamboo-watch.jpg',
-    //     price: 65,
-    //     category: 'Accessories',
-    //     quantity: 24,
-    //     inventoryStatus: 'INSTOCK',
-    //     rating: 5
-    //   }
-    // ];
-
-
   }
 
   getAllCustomers() {
     this.processing();
-    this._customerService.GET_ALL_CUSTOMERS().subscribe( (res: any) => {
+    this._customerService.GET_ALL_CUSTOMERS().subscribe((res: any) => {
 
-      if(res != null){
-        this.customers = res;
+      if (res != null) {
+        this.customers = res.reverse();
         console.log(JSON.stringify(this.customers));
         Swal.close();
-      }
-      else {
+      } else {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -60,10 +45,9 @@ export class ViewCustomersComponent implements OnInit{
   }
 
   viewCustomer(customer: CustomerDTO) {
-    console.log("---------------- "+JSON.stringify(customer));
+    console.log("---------------- " + JSON.stringify(customer));
     sessionStorage.setItem("SINGLE_CUSTOMER_DETAILS", JSON.stringify(customer));
   }
-
 
   processing() {
     let timerInterval = 0
@@ -90,6 +74,4 @@ export class ViewCustomersComponent implements OnInit{
       }
     })
   }
-
-  protected readonly indexedDB = indexedDB;
 }

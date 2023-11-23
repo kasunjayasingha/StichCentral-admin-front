@@ -1,4 +1,10 @@
-<p-table [value]="customers" styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="customers"
+         [paginator]="true"
+         [rows]="5"
+         [showCurrentPageReport]="true"
+         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [rowsPerPageOptions]="[5, 10, 30]"
+         styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
   <ng-template pTemplate="header">
     <tr>
       <th>No</th>

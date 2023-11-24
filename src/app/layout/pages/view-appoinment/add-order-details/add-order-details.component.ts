@@ -1,0 +1,218 @@
+import {Component, OnInit} from '@angular/core';
+import {AppointmentsDTO} from "../../../../DTO/AppointmentsDTO";
+import {ClientSampleDTO} from "../../../../DTO/clientSampleDTO";
+import {CustomerDTO} from "../../../../DTO/customerDTO";
+import {ConfirmationService, MessageService, ConfirmEventType} from 'primeng/api';
+import {AppoinmentService} from "../../../../service/appoinment.service";
+import {FormBuilder, Validators} from "@angular/forms";
+import {OrderDetailsDTO} from "../../../../DTO/OrderDetailsDTO";
+import Swal from "sweetalert2";
+import {Router} from "@angular/router";
+
+@Component({
+  selector: 'app-add-order-details',
+  templateUrl: './add-order-details.component.html',
+  styleUrls: ['./add-order-details.component.scss']
+})
+export class AddOrderDetailsComponent implements OnInit {
+
+  display: boolean = false;
+  selectedOrderType: any = null;
+  selectedSwingPlace: any = null;
+  orderformSubmitted = false;
+
+  orderDetailsArray: OrderDetailsDTO[] = [];
+  orderDetailsArrayStatusComplete: OrderDetailsDTO[] = [];
+
+  orderDetails: OrderDetailsDTO = new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0);
+
+  appoinmentInfo: AppointmentsDTO = new AppointmentsDTO(0,
+    0,
+    new Date(),
+    '',
+    '',
+    '',
+    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date()),
+    new CustomerDTO(0, '', '', '', '', 0, '', '', '', '', 0, '', '', new Date(), new Date()),
+    [new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0)],
+  );
+
+  position: string = '';
+
+  orderType = [
+    {name: 'T-Shirt', code: 'TSHIRT'},
+    {name: 'Badges', code: 'BADGES'},
+  ];
+
+  swingPlace = [
+    {name: 'Inside', code: 'INSIDE'},
+    {name: 'Outside', code: 'OUTSIDE'},
+  ];
+  orderform = this.formBuilder.group({
+    orderType: [null, Validators.required],
+    material: [null, Validators.required],
+    swingPlace: [null, Validators.required],
+    quantity: [null, Validators.required],
+    advance: [null, Validators.required],
+    dispatchDate: [null, Validators.required],
+    description: [null, Validators.required],
+  });
+  showSubmitButton = false;
+
+  constructor(
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private _appoinmentService: AppoinmentService,
+    private formBuilder: FormBuilder,
+    private route: Router,
+  ) {
+  }
+
+  get f1() {
+    return this.orderform.controls;
+  }
+
+  ngOnInit(): void {
+
+    if (sessionStorage.getItem('SINGLE_APPOINMENT_DETAILS')) {
+      this.appoinmentInfo = JSON.parse(sessionStorage.getItem('SINGLE_APPOINMENT_DETAILS')!);
+      if (this.appoinmentInfo.status == 'COMPLETED') {
+        this.showSubmitButton = true;
+        this.orderDetailsArray = this.appoinmentInfo.orderDetails;
+      }
+    }
+  }
+
+  confirmPosition(position: string) {
+    this.position = position;
+
+    this.confirmationService.confirm({
+      message: 'Do you want to cancel this appoinment?',
+      header: 'Cancel Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.appoinmentInfo.status = 'CANCELLED';
+        this._appoinmentService.CANCEL_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
+          if (res.success == true) {
+            this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment cancelled'});
+            this.display = false;
+          } else {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: 'Something went wrong'});
+          }
+        });
+      },
+      reject: (type: any) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled'});
+            break;
+        }
+      },
+      key: 'positionDialog'
+    });
+  }
+
+  onOrderDetailsSubmit() {
+    // this.display = false;
+    this.orderformSubmitted = true;
+
+    if (this.orderform.invalid) {
+      return;
+    } else {
+      let orderDetails = new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0);
+      orderDetails.orderType = this.selectedOrderType.name;
+      orderDetails.material = this.orderDetails.material;
+      orderDetails.swingPlace = this.selectedSwingPlace.name;
+      orderDetails.quantity = this.orderDetails.quantity;
+      orderDetails.advance = this.orderDetails.advance;
+      orderDetails.description = this.orderDetails.description;
+      orderDetails.dispatchDate = this.orderDetails.dispatchDate;
+      orderDetails.appointment_id = this.appoinmentInfo.id;
+
+      console.log("orderDetails " + JSON.stringify(orderDetails));
+
+      if (this.orderDetailsArray.length == 0 || this.orderDetailsArray == undefined
+        || this.orderDetailsArrayStatusComplete.length == 0 || this.orderDetailsArrayStatusComplete == undefined) {
+        if (this.appoinmentInfo.status == 'COMPLETED') {
+          this.orderDetailsArrayStatusComplete.push(orderDetails);
+          this.orderDetailsArray.push(orderDetails);
+
+        } else {
+          this.orderDetailsArray.push(orderDetails);
+        }
+        this.display = false;
+        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Order details added'});
+
+
+      } else {
+        if (this.appoinmentInfo.status == 'COMPLETED') {
+          this.orderDetailsArrayStatusComplete.push(orderDetails);
+          this.orderDetailsArray.push(orderDetails);
+
+        } else {
+          this.orderDetailsArray.push(orderDetails);
+        }
+        this.display = false;
+        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Order details added'});
+      }
+      console.log("orderDetailsArray " + JSON.stringify(this.orderDetailsArray));
+      this.orderformSubmitted = false;
+      this.orderform.reset();
+      this.showSubmitButton = true;
+
+    }
+
+  }
+
+  selectDropDown() {
+    // this.appoinmentInfo.orderType = this.selectedStatus.code;
+    // console.log("status " + this.appoinmentInfo.orderType);
+  }
+
+  selectPlaceDropDown() {
+    // this.appoinmentInfo.swingPlace = this.selectedSwingPlace.code;
+    // console.log("status " + this.appoinmentInfo.swingPlace);
+  }
+
+  onSubmit() {
+    if (this.appoinmentInfo.status == 'COMPLETED') {
+      this.appoinmentInfo.orderDetails = this.orderDetailsArrayStatusComplete;
+    } else {
+      this.appoinmentInfo.orderDetails = this.orderDetailsArray;
+    }
+
+    this.appoinmentInfo.status = "COMPLETED";
+    console.log("appoinmentInfo " + JSON.stringify(this.appoinmentInfo));
+    this._appoinmentService.SAVE_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
+      if (res.success == true) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Order details added successfully!',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.route.navigate(['view-appointment']);
+          }
+        });
+
+        this.orderDetailsArray = [];
+        this.showSubmitButton = false;
+
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      }
+    });
+  }
+
+
+}

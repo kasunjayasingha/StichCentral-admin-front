@@ -23,16 +23,16 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Panel  Components',
                 items: [
-                    { label: 'View Appoinment', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
+                    { label: 'View Appoinment', icon: 'pi pi-fw pi-id-card', routerLink: ['/view-appointment'] },
+                    { label: 'View Customer', icon: 'pi pi-fw pi-check-square', routerLink: ['/view-customers'] },
                   {
-                    label: 'View',
+                    label: 'Marketing',
                     icon: 'pi pi-fw pi-eye',
                     items: [
                       {
                         label: 'Customers',
                         icon: 'pi pi-fw pi-users',
-                        routerLink: ['/auth/login']
+                        routerLink: ['/customers']
                       },
                       {
                         label: 'Appoinments',
@@ -44,8 +44,58 @@ export class AppMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-file',
                         routerLink: ['/auth/access']
                       }
-                    ]
+                    ],
+
                   },
+
+                  {
+                    label: 'Production',
+                    icon: 'pi pi-fw pi-eye',
+                    items: [
+                      {
+                        label: 'Work Distribution',
+                        icon: 'pi pi-fw pi-users',
+                        items: [
+                          {
+                            label: 'Samples',
+                            icon: 'pi pi-fw pi-file',
+                            routerLink: ['/auth/access']
+                          },
+                          {},
+                          {},
+                        ],
+                      },
+                      {
+                        label: 'Appoinments',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/auth/error']
+                      },
+                      {
+                        label: 'Samples',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/auth/access']
+                      }
+                    ],
+
+                  },
+                  {
+                    label: 'Finance',
+                    icon: 'pi pi-fw pi-eye',
+                    items: [
+
+                      {
+                        label: 'Appoinments',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/auth/error']
+                      },
+                      {
+                        label: 'Samples',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/auth/access']
+                      }
+                    ],
+
+                  }
                 ]
             }
         ];

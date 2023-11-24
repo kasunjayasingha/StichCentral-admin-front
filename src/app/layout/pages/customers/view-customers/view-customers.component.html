@@ -1,0 +1,43 @@
+<p-table [value]="customers"
+         [paginator]="true"
+         [rows]="5"
+         [showCurrentPageReport]="true"
+         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [rowsPerPageOptions]="[5, 10, 30]"
+         styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>No</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Customer Type</th>
+      <th>View</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-customer let-index="rowIndex">
+    <tr>
+      <td>{{index + 1 }}</td>
+      <td>{{customer.first_name}} {{customer.last_name}}</td>
+      <td>{{customer.email}}</td>
+      <td>{{customer.phone_no}}</td>
+      <td>
+        <div *ngIf="customer.customer_type == 'REGULAR'">
+          <span class="customer-badge status-regular">{{customer.customer_type}}</span>
+        </div>
+
+        <div *ngIf="customer.customer_type == 'GUEST'">
+          <span class="customer-badge status-guest">{{customer.customer_type}}</span>
+        </div>
+
+<!--        {{customer.customer_type}}-->
+      </td>
+      <td>
+        <button (click) = "viewCustomer(customer)" routerLink="./view-customer-profile">
+          <i class="pi pi-eye text-green-500" ></i>
+        </button>
+
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import {AppoinmentService} from "../../../../service/appoinment.service";
 import {MessageService} from "primeng/api";
 import {AppointmentsDTO} from "../../../../DTO/AppointmentsDTO";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-view-table',
@@ -24,6 +25,7 @@ export class ViewTableComponent implements OnInit {
   constructor(
     private _appoinmentService: AppoinmentService,
     private messageService: MessageService,
+    private route: Router,
   ) {
   }
 
@@ -54,11 +56,21 @@ export class ViewTableComponent implements OnInit {
         console.log(JSON.stringify(this.appoinments));
         Swal.close();
       } else {
+
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: 'There is no ' + this.status.toLowerCase() + ' appoinments!',
-        })
+          confirmButtonText: 'Ok',
+          allowOutsideClick: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.route.navigate(['']);
+            // this.status = 'COMPLETED';
+            // this.selectedStatus = this.dropdownItems[1];
+            // this.getAllAppoinments();
+          }
+        });
       }
 
 

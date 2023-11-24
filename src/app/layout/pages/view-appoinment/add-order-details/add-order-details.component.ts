@@ -151,13 +151,28 @@ export class AddOrderDetailsComponent implements OnInit {
       header: 'Accept Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
+        this.processing();
         this.appoinmentInfo.status = 'ACCEPTED';
         this._appoinmentService.CANCEL_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
           if (res.success == true) {
+            Swal.close();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Appoinment accepted successfully!',
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                this.route.navigate(['view-appointment']);
+              }
+            })
             this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment accepted'});
-            this.route.navigate(['view-appointment']);
-            this.display = false;
+            // this.route.navigate(['view-appointment']);
+            // this.display = false;
           } else {
+            Swal.close();
             this.messageService.add({severity: 'error', summary: 'Error', detail: 'Something went wrong'});
           }
         });

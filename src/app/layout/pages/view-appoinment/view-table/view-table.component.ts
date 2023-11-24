@@ -56,7 +56,7 @@ export class ViewTableComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'There is no pending appoinments!',
+          text: 'There is no ' + this.status.toLowerCase() + ' appoinments!',
         })
       }
 

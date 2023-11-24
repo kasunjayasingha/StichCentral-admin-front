@@ -22,4 +22,8 @@ export class AppoinmentService {
   CANCEL_APPOINMENT(appoinment: AppointmentsDTO) {
     return this.http.post<any>(APPIONMENT_URL_API.CANCEL_APPOINMENT, appoinment, {headers: this.ConfigService.getHeaders()});
   }
+
+  SAVE_APPOINMENT(appoinment: AppointmentsDTO) {
+    return this.http.post<any>(APPIONMENT_URL_API.SAVE_APPOINMENT, appoinment, {headers: this.ConfigService.getHeaders()});
+  }
 }

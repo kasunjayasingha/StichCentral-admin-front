@@ -46,19 +46,64 @@
 
       </div>
 
+      <div *ngIf="showSubmitButton || appoinmentInfo.status== 'COMPLETED'" class="field col-12">
+        <p-table [paginator]="true"
+                 [rowsPerPageOptions]="[3,5,10]"
+                 [rows]="3"
+                 [showCurrentPageReport]="true"
+                 [tableStyle]="{'min-width': '50rem'}"
+                 [value]=" orderDetailsArray"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 styleClass="p-datatable-striped">
+          <ng-template pTemplate="caption">
+            <div class="flex justify-content-between flex-column sm:flex-row">
+              <div>
+                <span>Orders: </span>
+              </div>
+            </div>
+
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>No.</th>
+              <th>Order Type</th>
+              <th>Material</th>
+              <th>Dispatch Date</th>
+              <th>Advance</th>
+              <th>Quantity</th>
+            </tr>
+          </ng-template>
+          <ng-template let-index="rowIndex" let-order pTemplate="body">
+            <tr>
+              <td>{{index + 1 }}</td>
+              <td>{{order.orderType}} </td>
+              <td>{{order.material}}</td>
+              <td>{{order.dispatchDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{order.advance}}</td>
+              <td>{{order.quantity}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
     </div>
     <div class="flex justify-content-between flex-column sm:flex-row">
       <div class="flex gap-2">
-        <div *ngIf="appoinmentInfo.status== 'COMPLETED'">
-          <button icon="pi pi-external-link" label="View Order" pButton></button>
-        </div>
-        <div *ngIf="appoinmentInfo.status== 'PENDING'">
-          <button (click)="display=true" icon="pi pi-external-link" label="Make Order" pButton></button>
+        <!--        <div *ngIf="appoinmentInfo.status== 'COMPLETED'">-->
+        <!--          <button icon="pi pi-external-link" label="View Order" pButton></button>-->
+        <!--        </div>-->
+        <div *ngIf="appoinmentInfo.status== 'PENDING' || appoinmentInfo.status== 'COMPLETED'">
+          <button (click)="display=true" class="p-button-info" icon="pi pi-external-link" label="Make Order"
+                  pButton></button>
         </div>
       </div>
       <div class="flex gap-2">
-        <div *ngIf="appoinmentInfo.status== 'PENDING'">
-          <button (click)="confirmPosition('bottom-left')" class="p-button-danger" icon="pi pi-times-circle"
+        <div *ngIf="appoinmentInfo.status== 'PENDING' || appoinmentInfo.status== 'COMPLETED'">
+          <button (click)="onSubmit()" *ngIf="showSubmitButton" icon="pi pi-check-square" label="Submit"
+                  pButton></button>
+          &nbsp;
+          <button (click)="confirmPosition('bottom-right')" *ngIf="appoinmentInfo.status== 'PENDING'"
+                  class="p-button-danger" icon="pi pi-times-circle"
                   label="Cancel"
                   pButton pRipple
                   type="button"></button>
@@ -84,62 +129,127 @@
           [contentStyle]="{'max-height': '500px', 'overflow': 'auto'}" [modal]="true"
           [resizable]="true" [style]="{width: '60vw'}" header="Make Order"
           showEffect="fade">
-  <div class="p-fluid p-formgrid grid">
-    <div class="field col-12 md:col-6">
-      <label htmlFor="firstname2">Order Type</label>
-      <p-dropdown (onChange)="selectDropDown()" [(ngModel)]="selectedOrderType" [options]="orderType"
-                  optionLabel="name"></p-dropdown>
-    </div>
-    <div class="field col-12 md:col-6">
-      <label htmlFor="lastname2">Material</label>
-      <input id="material" pInputText type="text"/>
-    </div>
-    <!--        <div class="field col-12">-->
-    <!--          <label htmlFor="address">Address</label>-->
-    <!--          <input pInputTextarea id="address" rows="4" />-->
-    <!--        </div>-->
-    <div class="field col-12 md:col-6">
-      <label htmlFor="city">Quantity</label>
-      <input id="quantity" pInputText type="number"/>
-    </div>
-    <!--        <div class="field col-12 md:col-3">-->
-    <!--          <label htmlFor="state">State</label>-->
-    <!--          <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>-->
-    <!--        </div>-->
 
-    <div class="field col-12 md:col-3">
-      <label htmlFor="dis">Advance</label>
-      <div class="p-inputgroup">
-        <span class="p-inputgroup-addon">Rs</span>
-        <input pInputText placeholder="Advance" type="text">
-        <span class="p-inputgroup-addon">.00</span>
+  <form [formGroup]="orderform">
+    <div class="p-fluid p-formgrid grid">
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="firstname2">Order Type</label>
+          <p-dropdown (onChange)="selectDropDown()"
+                      [(ngModel)]="selectedOrderType"
+                      [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.orderType.errors }"
+                      [options]="orderType "
+                      [showClear]="true"
+                      formControlName="orderType"
+                      optionLabel="name" placeholder="Select a Order Type"></p-dropdown>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.orderType.errors" class="mt-1">
+          <small *ngIf="f1.orderType.errors['required']" class="p-error">Order Type is required.</small>
+        </div>
       </div>
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="lastname2">Material</label>
+          <input [(ngModel)]="orderDetails.material"
+                 [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.material.errors }"
+                 formControlName='material'
+                 id="material" pInputText type="text"/>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.material.errors" class="mt-1">
+          <small *ngIf="f1.material.errors['required']" class="p-error">Material is required.</small>
+        </div>
+      </div>
+      <!--        <div class="field col-12">-->
+      <!--          <label htmlFor="address">Address</label>-->
+      <!--          <input pInputTextarea id="address" rows="4" />-->
+      <!--        </div>-->
+
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="lastname2">Quantity</label>
+          <input [(ngModel)]="orderDetails.quantity"
+                 [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.quantity.errors }"
+                 formControlName='quantity'
+                 id="quantity" pInputText type="number"/>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.quantity.errors" class="mt-1">
+          <small *ngIf="f1.quantity.errors['required']" class="p-error">Quantity is required.</small>
+        </div>
+      </div>
+      <!--        <div class="field col-12 md:col-3">-->
+      <!--          <label htmlFor="state">State</label>-->
+      <!--          <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>-->
+      <!--        </div>-->
+
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="lastname2">Advance</label>
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">Rs</span>
+            <input [(ngModel)]="orderDetails.advance"
+                   [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.advance.errors }"
+                   formControlName='advance'
+                   id="advance" pInputText type="number"/>
+            <span class="p-inputgroup-addon">.00</span>
+          </div>
+
+        </div>
+        <div *ngIf="orderformSubmitted && f1.advance.errors" class="mt-1">
+          <small *ngIf="f1.advance.errors['required']" class="p-error">Advance is required.</small>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="zip">Swing Place</label>
+          <p-dropdown (onChange)="selectPlaceDropDown()" [(ngModel)]="selectedSwingPlace"
+                      [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.swingPlace.errors }"
+                      [options]="swingPlace"
+                      [showClear]="true" formControlName="swingPlace"
+                      optionLabel="name" placeholder="Select a Swing Place"></p-dropdown>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.swingPlace.errors" class="mt-1">
+          <small *ngIf="f1.swingPlace.errors['required']" class="p-error">Swing Place is required.</small>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="zip">Dispatch Date</label>
+          <p-calendar [(ngModel)]="orderDetails.dispatchDate"
+                      [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.dispatchDate.errors }"
+                      [showIcon]="true"
+                      appendTo="body"
+                      dateFormat="dd/mm/yy" formControlName='dispatchDate'
+                      inputId="icon"
+                      placeholder="Choose a Date"></p-calendar>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.dispatchDate.errors" class="mt-1">
+          <small *ngIf="f1.dispatchDate.errors['required']" class="p-error">Dispatch Date is required.</small>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <div class="field p-fluid">
+          <label htmlFor="dis">Description</label>
+          <textarea [(ngModel)]="orderDetails.description"
+                    [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.description.errors }"
+                    cols="30"
+                    formControlName='description' pInputText rows="4"></textarea>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.description.errors" class="mt-1">
+          <small *ngIf="f1.description.errors['required']" class="p-error">Description is required.</small>
+        </div>
+      </div>
+
     </div>
 
-
-    <div class="field col-12 md:col-3">
-      <label htmlFor="zip">Swing Place</label>
-      <p-dropdown (onChange)="selectPlaceDropDown()" [(ngModel)]="selectedSwingPlace" [options]="swingPlace"
-                  optionLabel="name"></p-dropdown>
-    </div>
-
-    <div class="field col-12 md:col-6">
-      <label htmlFor="zip">Dispatch Date</label>
-      <p-calendar [showIcon]="true" appendTo="body" dateFormat="dd/mm/yy" inputId="icon"
-                  placeholder="Choose a Date"></p-calendar>
-    </div>
-
-
-    <div class="field col-12 md:col-6">
-      <label htmlFor="dis">Description</label>
-      <textarea cols="30" disabled pInputText rows="4"></textarea>
-    </div>
-
-
-  </div>
+  </form>
   <ng-template pTemplate="footer">
-    <button (click)="display=false" class="p-button-outlined" icon="pi pi-check" label="Add" pButton></button>
+    <button (click)="onOrderDetailsSubmit()" class="p-button-outlined" icon="pi pi-check" label="Add" pButton></button>
   </ng-template>
+
+
 </p-dialog>
 
 

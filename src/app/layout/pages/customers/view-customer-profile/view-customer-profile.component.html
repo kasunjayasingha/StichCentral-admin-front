@@ -1,0 +1,85 @@
+<div class="surface-section">
+  <div class="font-medium text-3xl text-900 mb-3">More Customer Information</div>
+<!--  <div class="text-500 mb-5">Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.</div>-->
+  <ul class="list-none p-0 m-0">
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Full Name</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.first_name}} {{customerInfo.last_name}}</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Address</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.address}}</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">City</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.city}}</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Postal Code</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.postal_code}}</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Company</div>
+      <div *ngIf="customerInfo.company != ''" class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.company}}</div>
+      <div *ngIf="customerInfo.company == ''" class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">-</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">University</div>
+      <div *ngIf="customerInfo.university != ''" class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.university}}</div>
+      <div *ngIf="customerInfo.university == ''" class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">-</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Club</div>
+      <div *ngIf="customerInfo.club != ''" class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.club}}</div>
+      <div *ngIf="customerInfo.club == ''" class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">-</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Email</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.email}}</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Phone Number</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{customerInfo.phone_no}}</div>
+
+    </li>
+    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+      <div class="text-500 w-6 md:w-2 font-medium">Customer Type</div>
+      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+        <p-chip [label]="customerInfo.customer_type" class="mr-2"></p-chip>
+
+      </div>
+
+    </li>
+<!--    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">-->
+<!--      <div class="text-500 w-6 md:w-2 font-medium">Director</div>-->
+<!--      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Michael Mann</div>-->
+<!--      <div class="w-6 md:w-2 flex justify-content-end">-->
+<!--        <button pButton pRipple label="Edit" icon="pi pi-pencil" class="p-button-text"></button>-->
+<!--      </div>-->
+<!--    </li>-->
+<!--    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">-->
+<!--      <div class="text-500 w-6 md:w-2 font-medium">Actors</div>-->
+<!--      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Robert De Niro, Al Pacino</div>-->
+<!--      <div class="w-6 md:w-2 flex justify-content-end">-->
+<!--        <button pButton pRipple label="Edit" icon="pi pi-pencil" class="p-button-text"></button>-->
+<!--      </div>-->
+<!--    </li>-->
+<!--    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">-->
+<!--      <div class="text-500 w-6 md:w-2 font-medium">Plot</div>-->
+<!--      <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">-->
+<!--        A group of professional bank robbers start to feel the heat from police-->
+<!--        when they unknowingly leave a clue at their latest heist.</div>-->
+<!--      <div class="w-6 md:w-2 flex justify-content-end">-->
+<!--        <button pButton pRipple label="Edit" icon="pi pi-pencil" class="p-button-text"></button>-->
+<!--      </div>-->
+<!--    </li>-->
+  </ul>
+</div>

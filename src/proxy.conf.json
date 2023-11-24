@@ -1,0 +1,17 @@
+{
+  "/api/v1/customer/*": {
+    "target": "http://localhost:7252",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/api/v1/appoinments/*": {
+    "target": "http://localhost:7252",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/api/v1/auth/*": {
+    "target": "http://localhost:7252",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

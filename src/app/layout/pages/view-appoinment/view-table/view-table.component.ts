@@ -17,7 +17,8 @@ export class ViewTableComponent implements OnInit {
   dropdownItems = [
     {name: 'PENDING', code: 'PENDING'},
     {name: 'COMPLETED', code: 'COMPLETED'},
-    {name: 'CANCELLED', code: 'CANCELLED'}
+    {name: 'CANCELLED', code: 'CANCELLED'},
+    {name: 'ACCEPTED', code: 'ACCEPTED'}
   ];
 
   constructor(

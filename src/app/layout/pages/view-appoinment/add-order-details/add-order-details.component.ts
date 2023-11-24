@@ -32,6 +32,7 @@ export class AddOrderDetailsComponent implements OnInit {
     '',
     '',
     '',
+    '',
     new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date()),
     new CustomerDTO(0, '', '', '', '', 0, '', '', '', '', 0, '', '', new Date(), new Date()),
     [new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0)],
@@ -83,18 +84,78 @@ export class AddOrderDetailsComponent implements OnInit {
     }
   }
 
-  confirmPosition(position: string) {
+  confirmCancel(position: string) {
     this.position = position;
 
     this.confirmationService.confirm({
       message: 'Do you want to cancel this appoinment?',
       header: 'Cancel Confirmation',
       icon: 'pi pi-info-circle',
+      accept: async () => {
+        const {value: text} = await Swal.fire({
+          input: "textarea",
+          inputLabel: "Reason for cancellation",
+          inputPlaceholder: "Type your reason here...",
+          inputAttributes: {
+            "aria-label": "Type your reason here",
+          },
+          showCancelButton: true
+        });
+        if (text) {
+          this.processing();
+          this.appoinmentInfo.status = 'CANCELLED';
+          this.appoinmentInfo.cancellationReason = text.toLowerCase();
+          this._appoinmentService.CANCEL_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
+            if (res.success == true) {
+              this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment cancelled'});
+              Swal.close();
+              Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Appoinment cancelled successfully!',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                  this.route.navigate(['view-appointment']);
+                }
+              })
+            } else {
+              Swal.close();
+              this.messageService.add({severity: 'error', summary: 'Error', detail: 'Something went wrong'});
+            }
+          });
+        }
+
+      },
+      reject: (type: any) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled'});
+            break;
+        }
+      },
+      key: 'positionDialog'
+    });
+  }
+
+  confirmAccept(position: string) {
+    this.position = position;
+
+    this.confirmationService.confirm({
+      message: 'Do you want to accept this appoinment?',
+      header: 'Accept Confirmation',
+      icon: 'pi pi-info-circle',
       accept: () => {
-        this.appoinmentInfo.status = 'CANCELLED';
+        this.appoinmentInfo.status = 'ACCEPTED';
         this._appoinmentService.CANCEL_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
           if (res.success == true) {
-            this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment cancelled'});
+            this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment accepted'});
+            this.route.navigate(['view-appointment']);
             this.display = false;
           } else {
             this.messageService.add({severity: 'error', summary: 'Error', detail: 'Something went wrong'});
@@ -214,5 +275,31 @@ export class AddOrderDetailsComponent implements OnInit {
     });
   }
 
+
+  processing() {
+    let timerInterval = 0
+    Swal.fire({
+      title: 'Sending mail <b></b> wait..',
+      // html: 'Processing... <b></b> wait.',
+      icon: 'info',
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+        const b = Swal.getHtmlContainer()?.querySelector('b')
+        timerInterval = setInterval(() => {
+          // @ts-ignore
+          // b.textContent = Swal.getTimerLeft()
+        }, 200)
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+    })
+  }
 
 }

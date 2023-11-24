@@ -92,17 +92,25 @@
         <!--        <div *ngIf="appoinmentInfo.status== 'COMPLETED'">-->
         <!--          <button icon="pi pi-external-link" label="View Order" pButton></button>-->
         <!--        </div>-->
-        <div *ngIf="appoinmentInfo.status== 'PENDING' || appoinmentInfo.status== 'COMPLETED'">
+        <div *ngIf="appoinmentInfo.status== 'ACCEPTED' || appoinmentInfo.status== 'COMPLETED'">
           <button (click)="display=true" class="p-button-info" icon="pi pi-external-link" label="Make Order"
                   pButton></button>
         </div>
       </div>
       <div class="flex gap-2">
-        <div *ngIf="appoinmentInfo.status== 'PENDING' || appoinmentInfo.status== 'COMPLETED'">
+        <div
+          *ngIf="appoinmentInfo.status== 'PENDING' || appoinmentInfo.status== 'COMPLETED' || appoinmentInfo.status== 'ACCEPTED'">
           <button (click)="onSubmit()" *ngIf="showSubmitButton" icon="pi pi-check-square" label="Submit"
                   pButton></button>
           &nbsp;
-          <button (click)="confirmPosition('bottom-right')" *ngIf="appoinmentInfo.status== 'PENDING'"
+          <button (click)="confirmAccept('top')" *ngIf="appoinmentInfo.status== 'PENDING'"
+                  class="p-button-success" icon="pi pi-check-circle"
+                  label="Accept"
+                  pButton pRipple
+                  type="button"></button>
+          &nbsp;
+          <button (click)="confirmCancel('top')"
+                  *ngIf="appoinmentInfo.status== 'PENDING' || appoinmentInfo.status== 'ACCEPTED'"
                   class="p-button-danger" icon="pi pi-times-circle"
                   label="Cancel"
                   pButton pRipple

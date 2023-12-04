@@ -71,20 +71,41 @@ export class OrdersViewComponent implements OnInit {
 
   updateOrderDetails() {
     console.log("updateOrderDetails--- " + JSON.stringify(this.updateOderDetailsDto));
+    if (this.updateOderDetailsDto.orderStatus == 'COMPLETED') {
+      this.processing2();
+    }
     this._appoinmentService.UPDATE_ORDER_DETAILS(this.updateOderDetailsDto).subscribe((res: any) => {
       if (res.success == true) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'Order details update successfully!',
-          confirmButtonText: 'OK',
-          allowOutsideClick: false,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.getAllAppoinments();
-          }
-        })
+        console.log("res--- " + JSON.stringify(res));
+        if (res.message == 'mail send') {
+          Swal.close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Order completed successfully!',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              this.getAllAppoinments();
+            }
+          })
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Order details update successfully!',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              this.getAllAppoinments();
+            }
+          })
+        }
+
       }
     });
 
@@ -125,6 +146,32 @@ export class OrdersViewComponent implements OnInit {
     let timerInterval = 0
     Swal.fire({
       title: 'Processing table <b></b> wait..',
+      // html: 'Processing... <b></b> wait.',
+      icon: 'info',
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+        const b = Swal.getHtmlContainer()?.querySelector('b')
+        timerInterval = setInterval(() => {
+          // @ts-ignore
+          // b.textContent = Swal.getTimerLeft()
+        }, 200)
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+    })
+  }
+
+  processing2() {
+    let timerInterval = 0
+    Swal.fire({
+      title: 'Sending mail <b></b> wait..',
       // html: 'Processing... <b></b> wait.',
       icon: 'info',
       timerProgressBar: true,

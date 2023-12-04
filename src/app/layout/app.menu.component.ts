@@ -67,34 +67,18 @@ export class AppMenuComponent implements OnInit {
                 ],
               },
               {
-                label: 'Appoinments',
+                label: 'Orders',
                 icon: 'pi pi-fw pi-calendar',
-                routerLink: ['/auth/error']
+                routerLink: ['/view-orders']
               },
-              {
-                label: 'Samples',
-                icon: 'pi pi-fw pi-file',
-                routerLink: ['/auth/access']
-              }
+
             ],
 
           },
           {
             label: 'Finance',
             icon: 'pi pi-fw pi-eye',
-            items: [
-
-              {
-                label: 'Orders',
-                icon: 'pi pi-fw pi-calendar',
-                routerLink: ['/view-orders']
-              },
-              {
-                label: 'Samples',
-                icon: 'pi pi-fw pi-file',
-                routerLink: ['/auth/access']
-              }
-            ],
+            items: [],
 
           }
         ]

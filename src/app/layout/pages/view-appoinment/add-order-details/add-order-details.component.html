@@ -41,7 +41,10 @@
       <div class="field col-12 md:col-3">
         <label htmlFor="zip">Design</label>
         <div class="flex flex-wrap gap-2">
-          <button class="p-button-rounded p-button-info" icon="pi pi-file" pButton pRipple type="button"></button>
+          <button (click)="fileDownload(appoinmentInfo.client_sample )"
+                  class="p-button-rounded p-button-info" icon="pi pi-file" pButton pRipple
+                  type="button"
+          ></button>
         </div>
 
       </div>
@@ -189,7 +192,23 @@
       <!--          <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>-->
       <!--        </div>-->
 
-      <div class="field col-12 md:col-6">
+      <div class="field col-12 md:col-3">
+        <div class="field p-fluid">
+          <label htmlFor="firstname2">Payment</label>
+          <p-dropdown (onChange)="selectDropDown()"
+                      [(ngModel)]="selectedPayment"
+                      [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.payment.errors }"
+                      [options]="payment "
+                      [showClear]="true"
+                      formControlName="payment"
+                      optionLabel="name" placeholder="Select a Payment"></p-dropdown>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.payment.errors" class="mt-1">
+          <small *ngIf="f1.payment.errors['required']" class="p-error">Payment is required.</small>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-3">
         <div class="field p-fluid">
           <label htmlFor="lastname2">Advance</label>
           <div class="p-inputgroup">

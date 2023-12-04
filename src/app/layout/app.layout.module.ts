@@ -27,6 +27,7 @@ import {DialogModule} from "primeng/dialog";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
 import {CalendarModule} from "primeng/calendar";
+import { OrdersViewComponent } from './pages/orders-view/orders-view.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {CalendarModule} from "primeng/calendar";
     CustomersComponent,
     ViewAppoinmentComponent,
     AddOrderDetailsComponent,
+    OrdersViewComponent,
   ],
   imports: [
     BrowserModule,

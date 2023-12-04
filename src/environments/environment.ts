@@ -21,5 +21,7 @@ export const environment = {
     GET_ALL_APPOINMENT: `${API_BASE_URL_APPOINTMENT}/getAllAppoinment/`,
     CANCEL_APPOINMENT: `${API_BASE_URL_APPOINTMENT}/cancelAppoinment`,
     SAVE_APPOINMENT: `${API_BASE_URL_APPOINTMENT}/saveOrderDetails`,
+    UPDATE_ORDER_DETAILS: `${API_BASE_URL_APPOINTMENT}/updateOrderDetails`,
+    GET_ALL_ORDERDETAILS: `${API_BASE_URL_APPOINTMENT}/getOrderDetails`,
   },
 };

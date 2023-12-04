@@ -24,6 +24,7 @@ import {BadgeModule} from 'primeng/badge';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +49,7 @@ import {ConfirmationService} from 'primeng/api';
     SplitterModule,
     BadgeModule,
     SweetAlert2Module.forRoot(),
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]

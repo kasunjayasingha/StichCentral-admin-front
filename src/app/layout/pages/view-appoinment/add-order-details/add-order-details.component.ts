@@ -8,6 +8,9 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {OrderDetailsDTO} from "../../../../DTO/OrderDetailsDTO";
 import Swal from "sweetalert2";
 import {Router} from "@angular/router";
+import {saveAs} from 'file-saver';
+import * as FileSaver from "file-saver";
+
 
 @Component({
   selector: 'app-add-order-details',
@@ -20,11 +23,13 @@ export class AddOrderDetailsComponent implements OnInit {
   selectedOrderType: any = null;
   selectedSwingPlace: any = null;
   orderformSubmitted = false;
+  selectedPayment: any = null;
 
   orderDetailsArray: OrderDetailsDTO[] = [];
   orderDetailsArrayStatusComplete: OrderDetailsDTO[] = [];
+  formData: FormData = new FormData();
 
-  orderDetails: OrderDetailsDTO = new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0);
+  orderDetails: OrderDetailsDTO = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '');
 
   appoinmentInfo: AppointmentsDTO = new AppointmentsDTO(0,
     0,
@@ -33,9 +38,9 @@ export class AddOrderDetailsComponent implements OnInit {
     '',
     '',
     '',
-    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date()),
+    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')),
     new CustomerDTO(0, '', '', '', '', 0, '', '', '', '', 0, '', '', new Date(), new Date()),
-    [new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0)],
+    [new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '')], this.formData
   );
 
   position: string = '';
@@ -43,6 +48,11 @@ export class AddOrderDetailsComponent implements OnInit {
   orderType = [
     {name: 'T-Shirt', code: 'TSHIRT'},
     {name: 'Badges', code: 'BADGES'},
+  ];
+
+  payment = [
+    {name: 'Full', code: 'FULL'},
+    {name: 'Half', code: 'HALF'},
   ];
 
   swingPlace = [
@@ -54,6 +64,7 @@ export class AddOrderDetailsComponent implements OnInit {
     material: [null, Validators.required],
     swingPlace: [null, Validators.required],
     quantity: [null, Validators.required],
+    payment: [null, Validators.required],
     advance: [null, Validators.required],
     dispatchDate: [null, Validators.required],
     description: [null, Validators.required],
@@ -198,11 +209,12 @@ export class AddOrderDetailsComponent implements OnInit {
     if (this.orderform.invalid) {
       return;
     } else {
-      let orderDetails = new OrderDetailsDTO(0, '', '', 0, '', 0, '', new Date(), 0);
+      let orderDetails = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '');
       orderDetails.orderType = this.selectedOrderType.name;
       orderDetails.material = this.orderDetails.material;
       orderDetails.swingPlace = this.selectedSwingPlace.name;
       orderDetails.quantity = this.orderDetails.quantity;
+      orderDetails.payment = this.selectedPayment.code;
       orderDetails.advance = this.orderDetails.advance;
       orderDetails.description = this.orderDetails.description;
       orderDetails.dispatchDate = this.orderDetails.dispatchDate;
@@ -251,6 +263,22 @@ export class AddOrderDetailsComponent implements OnInit {
   selectPlaceDropDown() {
     // this.appoinmentInfo.swingPlace = this.selectedSwingPlace.code;
     // console.log("status " + this.appoinmentInfo.swingPlace);
+  }
+
+  fileDownload(clientSample: ClientSampleDTO) {
+    // var file = new File([clientSample.fileData], clientSample.file_name, {type: clientSample.file_type});
+    const file = new Blob([clientSample.fileData], {type: clientSample.file_type});
+    FileSaver.saveAs(file, clientSample.file_name);
+    // var fileURL = URL.createObjectURL(file);
+    //
+    // window.open(fileURL);
+    // const a = document.createElement('a');
+    //
+    // a.href = fileURL;
+    // a.download = clientSample.file_name;
+    // document.body.appendChild(a);
+    // a.click();
+    // window.URL.revokeObjectURL(fileURL);
   }
 
   onSubmit() {

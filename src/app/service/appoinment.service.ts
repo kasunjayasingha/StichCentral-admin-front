@@ -4,6 +4,8 @@ import {ConfigService} from "./config.service";
 import {APPIONMENT_URL_API} from "../app.component";
 import {AppointmentsDTO} from "../DTO/AppointmentsDTO";
 import {OrderDetailsDTO} from "../DTO/OrderDetailsDTO";
+import {DashBoardDTO} from "../DTO/DashBoardDTO";
+import {map} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +36,9 @@ export class AppoinmentService {
 
   UPDATE_ORDER_DETAILS(order: OrderDetailsDTO) {
     return this.http.post<any>(APPIONMENT_URL_API.UPDATE_ORDER_DETAILS, order, {headers: this.ConfigService.getHeaders()});
+  }
+
+  GET_DASHBOARD_DETAILS(year: any) {
+    return this.http.get<any>(APPIONMENT_URL_API.GET_DASHBOARD_DETAILS + '/' + year, {headers: this.ConfigService.getHeaders()}).pipe(map(result => (result as Array<DashBoardDTO>)));
   }
 }

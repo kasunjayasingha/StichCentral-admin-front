@@ -49,63 +49,6 @@ export class DashboardComponent implements OnInit {
     }
     this.selctedYear = currentYear;
     this.getDashboardDetails(this.selctedYear);
-
-    this.items = [
-      {label: 'Add New', icon: 'pi pi-fw pi-plus'},
-      {label: 'Remove', icon: 'pi pi-fw pi-minus'}
-    ];
-
-    this.customers1 = [
-      {
-        "id": 1000,
-        "name": "James Butt",
-        "country": {
-          "name": "Algeria",
-          "code": "dz"
-        },
-        "company": "Benton, John B Jr",
-        "date": "2015-09-13",
-        "status": "unqualified",
-        "activity": 17,
-        "representative": {
-          "name": "Ioni Bowcher",
-          "image": "ionibowcher.png"
-        }
-      },
-      {
-        "id": 1001,
-        "name": "Josephine Darakjy",
-        "country": {
-          "name": "Egypt",
-          "code": "eg"
-        },
-        "company": "Chanay, Jeffrey A Esq",
-        "date": "2019-02-09",
-        "status": "proposal",
-        "activity": 0,
-        "representative": {
-          "name": "Amy Elsner",
-          "image": "amyelsner.png"
-        },
-      },
-      {
-        "id": 1002,
-        "name": "Art Venere",
-        "country": {
-          "name": "Panama",
-          "code": "pa"
-        },
-        "company": "Chemel, James L Cpa",
-        "date": "2017-05-13",
-        "status": "qualified",
-        "activity": 63,
-        "representative": {
-          "name": "Asiya Javayant",
-          "image": "asiyajavayant.png"
-        },
-      },
-
-    ]
   }
 
 

@@ -13,5 +13,10 @@
     "target": "http://localhost:7252",
     "secure": false,
     "changeOrigin": true
+  },
+  "/api/v1/admin/*": {
+    "target": "http://localhost:7252",
+    "secure": false,
+    "changeOrigin": true
   }
 }

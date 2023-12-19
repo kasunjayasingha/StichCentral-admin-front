@@ -27,6 +27,10 @@ const routes: Routes = [
       {
         path: 'view-orders',
         component: OrdersViewComponent,
+      },
+      {
+        path: 'view-users',
+        loadChildren: () => import('./layout/pages/users/users.module').then(m => m.UsersModule)
       }
 
 

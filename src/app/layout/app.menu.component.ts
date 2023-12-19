@@ -80,7 +80,12 @@ export class AppMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-eye',
             items: [],
 
-          }
+          },
+          {
+            label: 'Users',
+            icon: 'pi pi-fw pi-calendar',
+            routerLink: ['/view-users']
+          },
         ]
       }
     ];

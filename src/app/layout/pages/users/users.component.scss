@@ -1,0 +1,42 @@
+.appoinment-badge {
+  border-radius: var(--border-radius);
+  padding: .25em .5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+}
+
+
+.appoinment-badge {
+  &.status-pending {
+    background: #FFD8B2;
+    color: #805B36;
+  }
+
+  &.status-completed {
+    background: #C8E6C9;
+    color: #256029;
+  }
+
+  &.status-cancelled {
+    background: #FFCDD2;
+    color: #C63737;
+  }
+
+  &.status-accepted {
+    background: #C8E6C9;
+    color: #256029;
+  }
+
+  &.status-physical {
+    background: #FEEDAF;
+    color: #8A5340;
+  }
+
+  &.status-online {
+    background: #B3E5FC;
+    color: #23547B;
+  }
+
+}

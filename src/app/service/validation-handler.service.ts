@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationHandlerService {
 
-  constructor() { }
+  constructor() {
+  }
 
   emailValidation() {
     return '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$';
@@ -78,5 +79,13 @@ export class ValidationHandlerService {
   yearValidation() {
     return '(19|20)[0-9][0-9]';
 
+  }
+
+  userNameValidation() {
+    return '^[a-zA-Z0-9_.]*$';
+  }
+
+  passwordValidation() {
+    return '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])';
   }
 }

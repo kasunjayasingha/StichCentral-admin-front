@@ -63,7 +63,9 @@ export class UsersComponent implements OnInit {
   onChangeStatus(user: any) {
     if (JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER') {
       if (user.status === 'ACTIVE') {
-        user.status = 'DEACTIVATE';
+        if (!(JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER')) {
+          user.status = 'DEACTIVATE';
+        }
       } else {
         user.status = 'ACTIVE';
       }
@@ -205,22 +207,25 @@ export class UsersComponent implements OnInit {
         header: 'Confirm',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          this._userService.DELETE_USER(user).subscribe(result => {
-            if (result.success == true) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Successfully Deleted User',
-              });
-              this.getAllUsers();
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'User Deletion Failed!',
-              });
-            }
-          });
+          if (!(JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER')) {
+            this._userService.DELETE_USER(user).subscribe(result => {
+              if (result.success == true) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Successfully Deleted User',
+                });
+                this.getAllUsers();
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'User Deletion Failed!',
+                });
+              }
+            });
+          }
+
         },
         reject: (type: any) => {
           switch (type) {

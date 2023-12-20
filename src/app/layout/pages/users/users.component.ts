@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserDTO} from "../../../DTO/UserDTO";
-import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmationService, MessageService, ConfirmEventType} from "primeng/api";
 import {AppoinmentService} from "../../../service/appoinment.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -16,7 +16,9 @@ import Swal from "sweetalert2";
 })
 export class UsersComponent implements OnInit {
   users: UserDTO[] = [];
-  changeStatus = false;
+  userCount = 0;
+  unchecked = false;
+  checked: boolean = true;
   position: string = '';
   addUser = false;
   userDto: UserDTO = new UserDTO(0, '', '', '',
@@ -58,16 +60,43 @@ export class UsersComponent implements OnInit {
     this.getAllUsers();
   }
 
-  onChangeStatus() {
-    this.changeStatus = !this.changeStatus;
-
-    if (this.changeStatus == true) {
-      this.userDto.status = 'ACTIVE';
-      console.log(this.userDto.status);
+  onChangeStatus(user: any) {
+    if (JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER') {
+      if (user.status === 'ACTIVE') {
+        user.status = 'DEACTIVATE';
+      } else {
+        user.status = 'ACTIVE';
+      }
+      console.log(user.status);
+      this._userService.UPDATE_USER(user).subscribe(result => {
+        if (result.success == true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Successfully Updated User',
+          });
+          this.getAllUsers();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'User Update Failed!',
+          });
+        }
+      });
     } else {
-      this.userDto.status = 'DEACTIVATE';
-      console.log(this.userDto.status);
+      Swal.fire({
+        icon: 'warning',
+        title: 'You not allowed to change this user status',
+        confirmButtonText: 'Ok',
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.getAllUsers();
+        }
+      });
     }
+
   }
 
   async onaddUSerSubmit() {
@@ -122,6 +151,13 @@ export class UsersComponent implements OnInit {
     this._userService.GET_ALL_USERS().subscribe(result => {
       if (result != null) {
         this.users = result.reverse();
+        this.userCount = 0;
+        for (let i = 0; i < this.users.length; i++) {
+          if (this.users[i].status == 'ACTIVE') {
+            this.userCount += 1;
+          }
+
+        }
         console.log(this.users);
         Swal.close();
       } else {
@@ -133,7 +169,7 @@ export class UsersComponent implements OnInit {
           allowOutsideClick: false,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.route.navigate(['']);
+            this.route.navigate(['/stichcentral']);
             // this.status = 'COMPLETED';
             // this.selectedStatus = this.dropdownItems[1];
             // this.getAllAppoinments();
@@ -157,8 +193,13 @@ export class UsersComponent implements OnInit {
 
   }
 
-  deleteUser(user: UserDTO) {
-    if (user.role == 'OWNER') {
+  editUser(user: UserDTO) {
+
+  }
+
+  deleteUser(user: UserDTO, position: string) {
+    this.position = position;
+    if (JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER') {
       this.confirmationService.confirm({
         message: 'Are you sure you want to delete ' + user.userName + '?',
         header: 'Confirm',
@@ -181,9 +222,17 @@ export class UsersComponent implements OnInit {
             }
           });
         },
-        reject: () => {
-          this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
-        }
+        reject: (type: any) => {
+          switch (type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+              break;
+            case ConfirmEventType.CANCEL:
+              this.messageService.add({severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled'});
+              break;
+          }
+        },
+        key: 'positionDialog'
       });
     } else {
       Swal.fire({

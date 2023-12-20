@@ -13,7 +13,7 @@ import {MultiSelectModule} from "primeng/multiselect";
 import {DropdownModule} from "primeng/dropdown";
 import {SliderModule} from "primeng/slider";
 import {ProgressBarModule} from "primeng/progressbar";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BlockUIModule} from 'primeng/blockui';
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
@@ -23,14 +23,20 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import {BadgeModule} from 'primeng/badge';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
-import { LoginComponent } from './login/login.component';
+import {LoginComponent} from './login/login.component';
+import {ButtonModule} from 'primeng/button';
+import {CheckboxModule} from 'primeng/checkbox';
+import {PasswordModule} from 'primeng/password';
+import {InputTextModule} from 'primeng/inputtext';
+import {NotFoundComponent} from './not-found/not-found.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +58,11 @@ import { LoginComponent } from './login/login.component';
     BadgeModule,
     SweetAlert2Module.forRoot(),
     ConfirmDialogModule,
+    ButtonModule,
+    CheckboxModule,
+    PasswordModule,
+    InputTextModule,
+    ReactiveFormsModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent]

@@ -30,4 +30,8 @@ export class AuthService {
       });
     });
   }
+
+  adminLogin(loginData: FormData): any {
+    return this.http.post(AUTENTICATION_URL_API.LOGIN, loginData);
+  }
 }

@@ -129,7 +129,7 @@ export class AddOrderDetailsComponent implements OnInit {
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  this.route.navigate(['view-appointment']);
+                  this.route.navigate(['/stichcentral/view-appointment']);
                 }
               })
             } else {
@@ -176,7 +176,7 @@ export class AddOrderDetailsComponent implements OnInit {
             }).then((result) => {
               /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
-                this.route.navigate(['view-appointment']);
+                this.route.navigate(['/stichcentral/view-appointment']);
               }
             })
             this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment accepted'});
@@ -301,7 +301,7 @@ export class AddOrderDetailsComponent implements OnInit {
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.route.navigate(['view-appointment']);
+            this.route.navigate(['/stichcentral/view-appointment']);
           }
         });
 

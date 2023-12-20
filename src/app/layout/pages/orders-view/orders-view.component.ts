@@ -56,7 +56,7 @@ export class OrdersViewComponent implements OnInit {
           allowOutsideClick: false,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.route.navigate(['']);
+            this.route.navigate(['/stichcentral']);
             // this.status = 'COMPLETED';
             // this.selectedStatus = this.dropdownItems[1];
             // this.getAllAppoinments();

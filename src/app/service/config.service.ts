@@ -1,18 +1,29 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {throwError} from "rxjs";
 import {HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {AppConfig} from "../layout/service/app.layout.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
 
+  config: AppConfig = {
+    ripple: false,
+    inputStyle: 'outlined',
+    menuMode: 'static',
+    colorScheme: 'light',
+    theme: 'lara-light-indigo',
+    scale: 14,
+  };
+
   constructor(
     private router: Router,
     private messageService: MessageService
-  ) { }
+  ) {
+  }
 
   handleError(err: HttpErrorResponse) {
     // console.log("Begin", err);

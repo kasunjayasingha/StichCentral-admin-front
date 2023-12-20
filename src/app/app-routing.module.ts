@@ -6,10 +6,20 @@ import {CustomersComponent} from "./layout/pages/customers/customers.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {ViewAppoinmentComponent} from "./layout/pages/view-appoinment/view-appoinment.component";
 import {OrdersViewComponent} from "./layout/pages/orders-view/orders-view.component";
+import {LoginComponent} from "./login/login.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
+import {AddDesignComponent} from "./layout/pages/add-design/add-design.component";
+import {authguardGuard} from "./guards/authguard.guard";
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'login',
+    component: LoginComponent,
+  },
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {
+    path: 'stichcentral',
+    canActivate: [authguardGuard],
     component: AppLayoutComponent,
     children: [
       {
@@ -31,10 +41,29 @@ const routes: Routes = [
       {
         path: 'view-users',
         loadChildren: () => import('./layout/pages/users/users.module').then(m => m.UsersModule)
-      }
+      },
+      {
+        path: 'add-design',
+        component: AddDesignComponent,
+      },
 
 
     ]
+  },
+  {
+    path: 'add-design',
+    canActivate: [authguardGuard],
+    component: AppLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: AddDesignComponent,
+      },
+    ]
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   }
 ];
 

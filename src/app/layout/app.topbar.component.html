@@ -20,8 +20,8 @@
       <i class="pi pi-calendar"></i>
       <span>Calendar</span>
     </button>
-    <button class="p-link layout-topbar-button">
-      <i class="pi pi-user"></i>
+    <button (click)="logout('center')" class="p-link layout-topbar-button">
+      <i class="pi pi-sign-out"></i>
       <span>Profile</span>
     </button>
     <!--        <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">-->
@@ -30,3 +30,9 @@
     <!--        </button>-->
   </div>
 </div>
+
+<p-toast></p-toast>
+<p-confirmDialog [position]="positiontop" [style]="{ width: '25vw' }" acceptButtonStyleClass="p-button-text"
+                 header="Confirmation"
+                 key="positionDialog2" rejectButtonStyleClass="p-button-text"
+                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>

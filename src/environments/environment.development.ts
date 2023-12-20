@@ -16,6 +16,7 @@ export const environment = {
     CHEACK_USERNAME: {
       USERNAME: `${API_BASE_URL_AUTHENTICATION}/checkUsernameIsPresent/`,
     },
+    LOGIN: `${API_BASE_URL_AUTHENTICATION}/adminLogin`,
   },
   CUSTOMER_URL: {
     GET_ALL_CUSTOMER: `${API_BASE_URL_COUSTOMER}/getAllCustomer`,
@@ -32,5 +33,6 @@ export const environment = {
     NEW_USER_REGISTRATSION: `${API_BASE_URL_ADMIN}/newUserSave`,
     GET_ALL_USERS: `${API_BASE_URL_ADMIN}/getAllUsers`,
     DELETE_USER: `${API_BASE_URL_ADMIN}/deleteUser`,
+    GET_USER_DETAILS: `${API_BASE_URL_ADMIN}/getUserDetails/`,
   }
 };

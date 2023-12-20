@@ -30,4 +30,8 @@ export class UserService {
   DELETE_USER(userDto: UserDTO) {
     return this.http.post<any>(ADMIN_URL_API.DELETE_USER, userDto, {headers: this.ConfigService.getHeaders()});
   }
+
+  GET_USER_DETAILS(username: string) {
+    return this.http.get<any>(ADMIN_URL_API.GET_USER_DETAILS + username, {headers: this.ConfigService.getHeaders()});
+  }
 }

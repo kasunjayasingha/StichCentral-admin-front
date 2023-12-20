@@ -63,7 +63,7 @@ export class UsersComponent implements OnInit {
   onChangeStatus(user: any) {
     if (JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER') {
       if (user.status === 'ACTIVE') {
-        if (!(JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER')) {
+        if (!(user.role == 'OWNER')) {
           user.status = 'DEACTIVATE';
         }
       } else {
@@ -207,7 +207,7 @@ export class UsersComponent implements OnInit {
         header: 'Confirm',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          if (!(JSON.parse(sessionStorage.getItem('user')!).role == 'OWNER')) {
+          if (!(user.role == 'OWNER')) {
             this._userService.DELETE_USER(user).subscribe(result => {
               if (result.success == true) {
                 Swal.fire({

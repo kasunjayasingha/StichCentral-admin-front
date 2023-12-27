@@ -151,7 +151,7 @@ export class AddDesignComponent implements OnInit {
         var file = new Blob([res], {type: doctype});
         var fileURL = URL.createObjectURL(file);
         a.href = fileURL
-        a.download = clientSample.id + '';
+        a.download = clientSample.file_name + '';
         a.click();
       },
       (error: HttpErrorResponse) => {

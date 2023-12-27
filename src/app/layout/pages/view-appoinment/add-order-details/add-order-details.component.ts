@@ -160,50 +160,147 @@ export class AddOrderDetailsComponent implements OnInit {
   confirmAccept(position: string) {
     this.position = position;
 
-    this.confirmationService.confirm({
-      message: 'Do you want to accept this appoinment?',
-      header: 'Accept Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        this.processing();
-        this.appoinmentInfo.status = 'ACCEPTED';
-        this._appoinmentService.CANCEL_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
-          if (res.success == true) {
-            Swal.close();
-            Swal.fire({
-              icon: 'success',
-              title: 'Success',
-              text: 'Appoinment accepted successfully!',
-              confirmButtonText: 'OK',
-              allowOutsideClick: false,
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                this.route.navigate(['/stichcentral/view-appointment']);
-              }
-            })
-            this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment accepted'});
-            // this.route.navigate(['view-appointment']);
-            // this.display = false;
-          } else {
-            Swal.close();
-            this.messageService.add({severity: 'error', summary: 'Error', detail: 'Something went wrong'});
+    if (this.appoinmentInfo.type == 'ONLINE') {
+      this.confirmationService.confirm({
+        message: 'Do you want to accept this appoinment?',
+        header: 'Accept Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: async () => {
+          const {value: formValues} = await Swal.fire({
+            title: "Meeting Details",
+            html: `
+          <div class="p-fluid p-formgrid grid">
+          <div class="field col-12 md:col-6">
+          <div class="field p-fluid">
+               <label for="swal-input1">Date</label>
+    <input type="date" id="swal-input1" class="swal2-input">
+          </div>
+          </div>
+
+    <div class="field col-12 md:col-6">
+          <div class="field p-fluid">
+          <label for="swal-input2">Time</label>
+    <input type="time" id="swal-input2" class="swal2-input" format="HH:mm a">
+          </div>
+          </div>
+
+    <div class="field col-12">
+<label for="swal-input3">Link</label>
+          <div class="field ">
+
+    <input type="url" id="swal-input3" class="swal2-input" placeholder="https://">
+          </div>
+          </div>
+
+
+    <div class="field col-12">
+    <label for="swal-input4">Description</label>
+          <div class="field ">
+
+    <textarea type="textarea" id="swal-input4" class="swal2-input" cols="30" rows="4" placeholder="Description"></textarea>
+          </div>
+          </div>
+
+    </div>
+  `,
+            focusConfirm: false,
+            preConfirm: () => {
+              return [
+                // @ts-ignore
+                document.getElementById('swal-input1').value,
+                // @ts-ignore
+                document.getElementById('swal-input2').value,
+                // @ts-ignore
+                document.getElementById('swal-input3').value,
+                // @ts-ignore
+                document.getElementById('swal-input4').value,
+              ];
+            }
+          });
+          if (formValues) {
+            this.appoinmentInfo.description = JSON.stringify(formValues);
+            console.log("appoinmentInfo " + JSON.stringify(this.appoinmentInfo));
+            this.cancelMethod();
           }
-        });
-      },
-      reject: (type: any) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled'});
-            break;
-        }
-      },
-      key: 'positionDialog'
+
+        },
+        reject: (type: any) => {
+          switch (type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+              break;
+            case ConfirmEventType.CANCEL:
+              this.messageService.add({severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled'});
+              break;
+          }
+        },
+        key: 'positionDialog'
+      });
+    } else {
+      this.confirmationService.confirm({
+        message: 'Do you want to accept this appoinment?',
+        header: 'Accept Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: async () => {
+          await Swal.fire({
+            title: "Accept Appoinment",
+            confirmButtonText: "Accept",
+            showCancelButton: true,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              this.cancelMethod();
+            }
+          })
+
+
+        },
+        reject: (type: any) => {
+          switch (type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+              break;
+            case ConfirmEventType.CANCEL:
+              this.messageService.add({severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled'});
+              break;
+          }
+        },
+        key: 'positionDialog'
+      });
+
+    }
+
+
+  }
+
+  cancelMethod() {
+    this.processing();
+    this.appoinmentInfo.status = 'ACCEPTED';
+    this._appoinmentService.CANCEL_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
+      if (res.success == true) {
+        // Swal.close();
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Appoinment accepted successfully!',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.route.navigate(['/stichcentral/view-appointment']);
+          }
+        })
+        this.messageService.add({severity: 'success', summary: 'Confirmed', detail: 'Appoinment accepted'});
+        // this.route.navigate(['view-appointment']);
+        // this.display = false;
+      } else {
+        Swal.close();
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Something went wrong'});
+      }
     });
   }
+
 
   onOrderDetailsSubmit() {
     // this.display = false;

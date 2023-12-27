@@ -83,8 +83,8 @@ export class AddDesignComponent implements OnInit {
             return;
           } else {
             const reader = new FileReader();
-            reader.onload = (e) => {
-              Swal.fire({
+            reader.onload = async (e) => {
+              await Swal.fire({
                 title: "Your uploaded design",
                 imageUrl: e.target?.result as string,
                 imageAlt: "The uploaded design",
@@ -92,11 +92,13 @@ export class AddDesignComponent implements OnInit {
                 showCancelButton: true,
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
+                  this.processingMail();
                   const formData = new FormData();
                   formData.append('file', file);
                   formData.append('orderId', design.id + '');
                   this._appoinmentService.UPLOAD_DESIGN(formData).subscribe((res: any) => {
                     if (res.success == true) {
+                      // Swal.close();
                       if (type == 'ADD') {
                         Swal.fire({
                           icon: 'success',
@@ -122,6 +124,7 @@ export class AddDesignComponent implements OnInit {
                       }
 
                     }
+                    // Swal.close();
                   });
 
                 },
@@ -178,6 +181,32 @@ export class AddDesignComponent implements OnInit {
     let timerInterval = 0
     Swal.fire({
       title: 'Processing table <b></b> wait..',
+      // html: 'Processing... <b></b> wait.',
+      icon: 'info',
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading()
+        const b = Swal.getHtmlContainer()?.querySelector('b')
+        timerInterval = setInterval(() => {
+          // @ts-ignore
+          // b.textContent = Swal.getTimerLeft()
+        }, 200)
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+    })
+  }
+
+  processingMail() {
+    let timerInterval = 0
+    Swal.fire({
+      title: 'Sending mail <b></b> wait..',
       // html: 'Processing... <b></b> wait.',
       icon: 'info',
       timerProgressBar: true,

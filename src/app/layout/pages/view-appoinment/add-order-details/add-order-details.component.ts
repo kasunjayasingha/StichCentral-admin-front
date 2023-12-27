@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import {Router} from "@angular/router";
 import {saveAs} from 'file-saver';
 import * as FileSaver from "file-saver";
+import {HttpErrorResponse} from "@angular/common/http";
 
 
 @Component({
@@ -29,7 +30,8 @@ export class AddOrderDetailsComponent implements OnInit {
   orderDetailsArrayStatusComplete: OrderDetailsDTO[] = [];
   formData: FormData = new FormData();
 
-  orderDetails: OrderDetailsDTO = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '');
+  orderDetails: OrderDetailsDTO = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
+    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')));
 
   appoinmentInfo: AppointmentsDTO = new AppointmentsDTO(0,
     0,
@@ -40,7 +42,8 @@ export class AddOrderDetailsComponent implements OnInit {
     '',
     new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')),
     new CustomerDTO(0, '', '', '', '', 0, '', '', '', '', 0, '', '', new Date(), new Date()),
-    [new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '')], this.formData
+    [new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
+      new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')))], this.formData
   );
 
   position: string = '';
@@ -209,7 +212,8 @@ export class AddOrderDetailsComponent implements OnInit {
     if (this.orderform.invalid) {
       return;
     } else {
-      let orderDetails = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '');
+      let orderDetails = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
+        new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')));
       orderDetails.orderType = this.selectedOrderType.name;
       orderDetails.material = this.orderDetails.material;
       orderDetails.swingPlace = this.selectedSwingPlace.name;
@@ -228,6 +232,9 @@ export class AddOrderDetailsComponent implements OnInit {
           this.orderDetailsArrayStatusComplete.push(orderDetails);
           this.orderDetailsArray.push(orderDetails);
 
+        } else if (this.appoinmentInfo.status == 'ACCEPTED') {
+          this.orderDetailsArray.push(orderDetails);
+          this.onSubmit();
         } else {
           this.orderDetailsArray.push(orderDetails);
         }
@@ -266,20 +273,28 @@ export class AddOrderDetailsComponent implements OnInit {
   }
 
   fileDownload(clientSample: ClientSampleDTO) {
-    // var file = new File([clientSample.fileData], clientSample.file_name, {type: clientSample.file_type});
-    const file = new Blob([clientSample.fileData], {type: clientSample.file_type});
-    FileSaver.saveAs(file, clientSample.file_name);
-    // var fileURL = URL.createObjectURL(file);
-    //
-    // window.open(fileURL);
-    // const a = document.createElement('a');
-    //
-    // a.href = fileURL;
-    // a.download = clientSample.file_name;
-    // document.body.appendChild(a);
-    // a.click();
-    // window.URL.revokeObjectURL(fileURL);
+    this._appoinmentService.DOWNLOAD_FILE(clientSample.id).subscribe(
+      res => {
+        let doctype = res.type;
+        var file = new Blob([res], {type: doctype});
+        var fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+        //  download file
+        const a = document.createElement('a')
+        // let doctype = res.type;
+        var file = new Blob([res], {type: doctype});
+        var fileURL = URL.createObjectURL(file);
+        a.href = fileURL
+        a.download = clientSample.id + '';
+        a.click();
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error downloading the file', error);
+        // Handle error appropriately, e.g., show a user-friendly error message.
+      }
+    );
   }
+
 
   onSubmit() {
     if (this.appoinmentInfo.status == 'COMPLETED') {
@@ -288,7 +303,7 @@ export class AddOrderDetailsComponent implements OnInit {
       this.appoinmentInfo.orderDetails = this.orderDetailsArray;
     }
 
-    this.appoinmentInfo.status = "COMPLETED";
+    // this.appoinmentInfo.status = "COMPLETED";
     console.log("appoinmentInfo " + JSON.stringify(this.appoinmentInfo));
     this._appoinmentService.SAVE_APPOINMENT(this.appoinmentInfo).subscribe((res: any) => {
       if (res.success == true) {

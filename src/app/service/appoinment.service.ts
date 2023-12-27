@@ -41,4 +41,12 @@ export class AppoinmentService {
   GET_DASHBOARD_DETAILS(year: any) {
     return this.http.get<any>(APPIONMENT_URL_API.GET_DASHBOARD_DETAILS + '/' + year, {headers: this.ConfigService.getHeaders()}).pipe(map(result => (result as Array<DashBoardDTO>)));
   }
+
+  GET_ALL_APPOINMENTSWITHORDER() {
+    return this.http.get<any>(APPIONMENT_URL_API.GET_ALL_APPOINMENTSWITHORDER, {headers: this.ConfigService.getHeaders()});
+  }
+
+  DOWNLOAD_FILE(id: number) {
+    return this.http.get(APPIONMENT_URL_API.DOWNLOAD_FILE + id, {responseType: 'blob'});
+  }
 }

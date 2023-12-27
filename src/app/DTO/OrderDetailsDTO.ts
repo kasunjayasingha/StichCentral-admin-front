@@ -1,3 +1,5 @@
+import {ClientSampleDTO} from "./clientSampleDTO";
+
 export class OrderDetailsDTO {
   id: number;
   orderType: string;
@@ -13,9 +15,10 @@ export class OrderDetailsDTO {
   createDate: Date;
   updateDate: Date;
   orderStatus: string;
+  clientSample: ClientSampleDTO;
 
   constructor(id: number, orderType: String, material: string, quantity: number, swingPlace: string, payment: string,
-              advance: number, description: string, dispatchDate: Date, appointment_id: number, invoiceNo: string, createDate: Date, updateDate: Date, orderStatus: string) {
+              advance: number, description: string, dispatchDate: Date, appointment_id: number, invoiceNo: string, createDate: Date, updateDate: Date, orderStatus: string, clientSample: ClientSampleDTO) {
     this.id = 0;
     this.orderType = '';
     this.material = '';
@@ -30,5 +33,6 @@ export class OrderDetailsDTO {
     this.createDate = new Date();
     this.updateDate = new Date();
     this.orderStatus = '';
+    this.clientSample = clientSample;
   }
 }

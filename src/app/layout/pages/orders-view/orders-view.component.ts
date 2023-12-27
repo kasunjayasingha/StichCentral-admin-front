@@ -19,7 +19,8 @@ export class OrdersViewComponent implements OnInit {
   orederDetails: OrderDetailsDTO[] = [];
   selectedPayment: any = null;
   formData: FormData = new FormData();
-  updateOderDetailsDto = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '');
+  updateOderDetailsDto = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
+    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')));
 
   payment = [
     {name: 'Half', code: 'HALF'},

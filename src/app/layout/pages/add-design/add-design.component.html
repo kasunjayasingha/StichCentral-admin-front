@@ -1,1 +1,93 @@
-<p>add-design works!</p>
+<div class="card py-10 ">
+  <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+    <li>
+      <a class="text-500 no-underline line-height-3 cursor-pointer">Panel Components</a>
+    </li>
+    <li class="px-2">
+      <i class="pi pi-angle-right text-500 line-height-3"></i>
+    </li>
+    <li>
+      <span class="text-900 line-height-3">Design</span>
+    </li>
+  </ul>
+  <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+    <div>
+      <div class="font-medium text-3xl text-900">Designs</div>
+      <!--        <div class="flex align-items-center text-700 flex-wrap">-->
+      <!--          <div class="mr-5 flex align-items-center mt-3">-->
+      <!--            <i class="pi pi-users mr-2"></i>-->
+      <!--            <span>332 Active Users</span>-->
+      <!--          </div>-->
+      <!--          <div class="mr-5 flex align-items-center mt-3">-->
+      <!--            <i class="pi pi-globe mr-2"></i>-->
+      <!--            <span>9402 Sessions</span>-->
+      <!--          </div>-->
+      <!--          <div class="flex align-items-center mt-3">-->
+      <!--            <i class="pi pi-clock mr-2"></i>-->
+      <!--            <span>2.32m Avg. Duration</span>-->
+      <!--          </div>-->
+      <!--        </div>-->
+    </div>
+    <!--      <div class="mt-3 lg:mt-0">-->
+    <!--        <button pButton pRipple label="Add" class="p-button-outlined mr-2" icon="pi pi-user-plus"></button>-->
+    <!--        <button pButton pRipple label="Save" icon="pi pi-check"></button>-->
+    <!--      </div>-->
+  </div>
+</div>
+
+<p-table [paginator]="true"
+         [rowsPerPageOptions]="[5, 10, 30]"
+         [rows]="5"
+         [showCurrentPageReport]="true"
+         [tableStyle]="{'min-width': '50rem'}"
+         [value]="orders"
+         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         styleClass="p-datatable-striped">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>No.</th>
+      <th>Invoice No.</th>
+      <th>Order Type</th>
+      <th>Material</th>
+      <th>Dispatch Date</th>
+      <th>Action</th>
+    </tr>
+  </ng-template>
+  <ng-template let-index="rowIndex" let-order pTemplate="body">
+    <tr>
+      <td>{{ index + 1 }}</td>
+      <td>{{ order.invoiceNo }}</td>
+      <td>{{ order.orderType }}</td>
+      <td>{{ order.material }}</td>
+      <td>{{ order.dispatchDate | date: 'dd/MM/yyyy' }}</td>
+      <td>
+        <div *ngIf="order.clientSample == null">
+          <button
+            (click)="addDesign(order)"
+            icon="pi pi-plus"
+            pButton styleClass="p-button-success"></button>
+        </div>
+
+        <div *ngIf="order.clientSample != null">
+
+          <button
+            icon="pi pi-eye"
+            pButton styleClass="p-button-success"></button>
+          &nbsp;
+          <button
+            icon="pi pi-pencil"
+            pButton styleClass="p-button-success"></button>
+
+        </div>
+      </td>
+      <!--      <td>-->
+      <!--        <button (click)="addDesign(appoinment)" routerLink="./add-order-details">-->
+      <!--          <i class="pi pi-eye text-green-500"></i>-->
+      <!--        </button>-->
+
+      <!--      </td>-->
+
+    </tr>
+  </ng-template>
+</p-table>

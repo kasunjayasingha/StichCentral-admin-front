@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ConfigService} from "./config.service";
-import {APPIONMENT_URL_API} from "../app.component";
+import {ADMIN_URL_API, APPIONMENT_URL_API} from "../app.component";
 import {AppointmentsDTO} from "../DTO/AppointmentsDTO";
 import {OrderDetailsDTO} from "../DTO/OrderDetailsDTO";
 import {DashBoardDTO} from "../DTO/DashBoardDTO";
@@ -48,5 +48,9 @@ export class AppoinmentService {
 
   DOWNLOAD_FILE(id: number) {
     return this.http.get(APPIONMENT_URL_API.DOWNLOAD_FILE + id, {responseType: 'blob'});
+  }
+
+  UPLOAD_DESIGN(design: FormData) {
+    return this.http.post<any>(ADMIN_URL_API.SAVE_DESIGN, design);
   }
 }

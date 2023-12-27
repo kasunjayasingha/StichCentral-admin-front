@@ -64,7 +64,7 @@
       <td>
         <div *ngIf="order.clientSample == null">
           <button
-            (click)="addDesign(order)"
+            (click)="addDesign(order , 'ADD')"
             icon="pi pi-plus"
             pButton styleClass="p-button-success"></button>
         </div>
@@ -72,10 +72,12 @@
         <div *ngIf="order.clientSample != null">
 
           <button
+            (click)="fileDownload(order.clientSample )"
             icon="pi pi-eye"
             pButton styleClass="p-button-success"></button>
           &nbsp;
           <button
+            (click)="addDesign(order , 'UPDATE')"
             icon="pi pi-pencil"
             pButton styleClass="p-button-success"></button>
 

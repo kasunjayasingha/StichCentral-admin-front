@@ -31,7 +31,7 @@ export class AddOrderDetailsComponent implements OnInit {
   formData: FormData = new FormData();
 
   orderDetails: OrderDetailsDTO = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
-    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')));
+    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(),));
 
   appoinmentInfo: AppointmentsDTO = new AppointmentsDTO(0,
     0,
@@ -40,10 +40,10 @@ export class AddOrderDetailsComponent implements OnInit {
     '',
     '',
     '',
-    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')),
+    new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(),),
     new CustomerDTO(0, '', '', '', '', 0, '', '', '', '', 0, '', '', new Date(), new Date()),
     [new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
-      new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')))], this.formData
+      new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(),))], this.formData
   );
 
   position: string = '';
@@ -213,7 +213,7 @@ export class AddOrderDetailsComponent implements OnInit {
       return;
     } else {
       let orderDetails = new OrderDetailsDTO(0, '', '', 0, '', '', 0, '', new Date(), 0, '', new Date(), new Date(), '',
-        new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(), new File([], '')));
+        new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date()));
       orderDetails.orderType = this.selectedOrderType.name;
       orderDetails.material = this.orderDetails.material;
       orderDetails.swingPlace = this.selectedSwingPlace.name;
@@ -223,6 +223,7 @@ export class AddOrderDetailsComponent implements OnInit {
       orderDetails.description = this.orderDetails.description;
       orderDetails.dispatchDate = this.orderDetails.dispatchDate;
       orderDetails.appointment_id = this.appoinmentInfo.id;
+      orderDetails.clientSample = new ClientSampleDTO(0, '', '', '', '', 0, new Date(), new Date(),);
 
       console.log("orderDetails " + JSON.stringify(orderDetails));
 

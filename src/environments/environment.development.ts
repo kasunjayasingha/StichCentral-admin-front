@@ -36,5 +36,6 @@ export const environment = {
     GET_ALL_USERS: `${API_BASE_URL_ADMIN}/getAllUsers`,
     DELETE_USER: `${API_BASE_URL_ADMIN}/deleteUser`,
     GET_USER_DETAILS: `${API_BASE_URL_ADMIN}/getUserDetails/`,
+    SAVE_DESIGN: `${API_BASE_URL_ADMIN}/uploadDesign`
   }
 };

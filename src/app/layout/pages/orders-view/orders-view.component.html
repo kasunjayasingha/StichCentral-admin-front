@@ -45,19 +45,19 @@
     </ng-template>
     <ng-template let-index="rowIndex" let-order pTemplate="body">
       <tr>
-        <td>{{index + 1}}</td>
-        <td>{{order.invoiceNo}}</td>
-        <td>{{order.orderType}}</td>
-        <td>{{order.quantity}}</td>
-        <td>Rs.{{order.advance}}</td>
+        <td>{{ index + 1 }}</td>
+        <td>{{ order.invoiceNo }}</td>
+        <td>{{ order.orderType }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>Rs.{{ order.advance }}</td>
         <td>
           <!--          {{appoinment.orderDetails[index].payment}}-->
           <div *ngIf="order.payment == 'FULL'">
-            <span class="appoinment-badge status-full">{{order.payment}}</span>
+            <span class="appoinment-badge status-full">{{ order.payment }}</span>
           </div>
 
           <div *ngIf="order.payment == 'HALF'">
-            <span class="appoinment-badge status-half">{{order.payment}}</span>
+            <span class="appoinment-badge status-half">{{ order.payment }}</span>
             <!--            <p-dropdown (onChange)="selectDropDown(appoinment,index)"-->
             <!--                        [(ngModel)]="selectedPayment"-->
             <!--                        [options]="payment "-->
@@ -66,36 +66,44 @@
             <!--                        optionLabel="name"></p-dropdown>-->
           </div>
         </td>
-        <td>{{order.dispatchDate}}</td>
+        <td>{{ order.dispatchDate }}</td>
         <td>
+
           <div *ngIf="order.orderStatus == 'PENDING'">
-            <span class="appoinment-badge status-pending">{{order.orderStatus}}</span>
+            <span class="appoinment-badge status-pending">{{ order.orderStatus }}</span>
           </div>
 
           <div *ngIf="order.orderStatus == 'INPROGRESS'">
-            <span class="appoinment-badge status-inprogerss">{{order.orderStatus}}</span>
+            <span class="appoinment-badge status-inprogerss">{{ order.orderStatus }}</span>
           </div>
 
           <div *ngIf="order.orderStatus == 'COMPLETED'">
-            <span class="appoinment-badge status-completed">{{order.orderStatus}}</span>
+            <span class="appoinment-badge status-completed">{{ order.orderStatus }}</span>
           </div>
         <td>
-          <button (click)="viewOrder(order, 'start', index)"
-                  *ngIf="order.orderStatus == 'PENDING'"
-                  icon="pi pi-power-off"
-                  label="Start" pButton styleClass="p-button-warning">
+          <div *ngIf="order.clientSample != null">
+            <button (click)="viewOrder(order, 'start', index)"
+                    *ngIf="order.orderStatus == 'PENDING'"
+                    icon="pi pi-power-off"
+                    label="Start" pButton styleClass="p-button-warning">
 
-          </button>
+            </button>
 
-          <button (click)="viewOrder(order, 'complete', index)"
-                  *ngIf="order.orderStatus == 'INPROGRESS'"
-                  icon="pi pi-check"
-                  label="Complete" pButton styleClass="p-button-success">
+            <button (click)="viewOrder(order, 'complete', index)"
+                    *ngIf="order.orderStatus == 'INPROGRESS'"
+                    icon="pi pi-check"
+                    label="Complete" pButton styleClass="p-button-success">
 
-          </button>
-          <div *ngIf="order.orderStatus == 'COMPLETED'">
-            <i class="pi pi-check-circle text-green-500"></i>
+            </button>
+            <div *ngIf="order.orderStatus == 'COMPLETED'">
+              <i class="pi pi-check-circle text-green-500"></i>
+            </div>
+
           </div>
+          <div *ngIf="order.clientSample == null">
+            <span class="text-red-500">No Sample</span>
+          </div>
+
 
         </td>
         <!--        <td>-->

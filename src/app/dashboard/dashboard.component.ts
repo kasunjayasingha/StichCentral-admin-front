@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardDetails = new DashBoardDTO(0, 0, 0, 0, 0, 0, 0, 0, 0, []);
 
     const currentYear = new Date().getFullYear();
-    for (let year = 2023; year <= currentYear; year++) {
+    for (let year = 2024; year <= currentYear; year++) {
       this.years.push({name: year, code: year});
     }
     this.selctedYear = currentYear;

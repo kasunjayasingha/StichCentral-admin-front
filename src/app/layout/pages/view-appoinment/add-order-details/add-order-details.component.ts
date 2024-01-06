@@ -25,6 +25,7 @@ export class AddOrderDetailsComponent implements OnInit {
   selectedSwingPlace: any = null;
   orderformSubmitted = false;
   selectedPayment: any = null;
+  unitPrice: any = null;
 
   orderDetailsArray: OrderDetailsDTO[] = [];
   orderDetailsArrayStatusComplete: OrderDetailsDTO[] = [];
@@ -67,8 +68,9 @@ export class AddOrderDetailsComponent implements OnInit {
     material: [null, Validators.required],
     swingPlace: [null, Validators.required],
     quantity: [null, Validators.required],
+    unitPrice: [null, Validators.required],
     payment: [null, Validators.required],
-    advance: [null, Validators.required],
+    advance: [{value: null, disabled: true}, Validators.required],
     dispatchDate: [null, Validators.required],
     description: [null, Validators.required],
   });
@@ -363,6 +365,16 @@ export class AddOrderDetailsComponent implements OnInit {
   selectDropDown() {
     // this.appoinmentInfo.orderType = this.selectedStatus.code;
     // console.log("status " + this.appoinmentInfo.orderType);
+    if (this.selectedPayment.code == 'HALF') {
+      this.orderDetails.advance = (this.unitPrice * this.orderDetails.quantity) / 2;
+    } else {
+      this.orderDetails.advance = (this.unitPrice * this.orderDetails.quantity);
+    }
+  }
+
+  cleanPayment() {
+    this.orderDetails.advance = 0;
+    this.selectedPayment = null;
   }
 
   selectPlaceDropDown() {

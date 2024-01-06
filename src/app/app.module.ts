@@ -4,7 +4,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AppLayoutModule} from "./layout/app.layout.module";
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {ChartModule} from 'primeng/chart';
 import {MenuModule} from "primeng/menu";
@@ -29,6 +28,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {PasswordModule} from 'primeng/password';
 import {InputTextModule} from 'primeng/inputtext';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {AppLayoutModule} from "./layout/app.layout.module";
 
 
 @NgModule({

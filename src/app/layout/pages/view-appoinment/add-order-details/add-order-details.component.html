@@ -78,12 +78,12 @@
           </ng-template>
           <ng-template let-index="rowIndex" let-order pTemplate="body">
             <tr>
-              <td>{{index + 1 }}</td>
-              <td>{{order.orderType}} </td>
-              <td>{{order.material}}</td>
-              <td>{{order.dispatchDate | date: 'dd/MM/yyyy'}}</td>
-              <td>{{order.advance}}</td>
-              <td>{{order.quantity}}</td>
+              <td>{{ index + 1 }}</td>
+              <td>{{ order.orderType }}</td>
+              <td>{{ order.material }}</td>
+              <td>{{ order.dispatchDate | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ order.advance }}</td>
+              <td>{{ order.quantity }}</td>
             </tr>
           </ng-template>
         </p-table>
@@ -175,16 +175,31 @@
       <!--          <input pInputTextarea id="address" rows="4" />-->
       <!--        </div>-->
 
-      <div class="field col-12 md:col-6">
+      <div class="field col-12 md:col-3">
         <div class="field p-fluid">
           <label htmlFor="lastname2">Quantity</label>
-          <input [(ngModel)]="orderDetails.quantity"
+          <input (input)="cleanPayment()"
+                 [(ngModel)]="orderDetails.quantity"
                  [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.quantity.errors }"
                  formControlName='quantity'
                  id="quantity" pInputText type="number"/>
         </div>
         <div *ngIf="orderformSubmitted && f1.quantity.errors" class="mt-1">
           <small *ngIf="f1.quantity.errors['required']" class="p-error">Quantity is required.</small>
+        </div>
+      </div>
+
+      <div class="field col-12 md:col-3">
+        <div class="field p-fluid">
+          <label htmlFor="lastname2">Unit Price</label>
+          <input (input)="cleanPayment()"
+                 [(ngModel)]="unitPrice"
+                 [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.unitPrice.errors }"
+                 formControlName='unitPrice'
+                 id="unitPrice" pInputText type="number"/>
+        </div>
+        <div *ngIf="orderformSubmitted && f1.unitPrice.errors" class="mt-1">
+          <small *ngIf="f1.unitPrice.errors['required']" class="p-error">Unit Price is required.</small>
         </div>
       </div>
       <!--        <div class="field col-12 md:col-3">-->
@@ -214,6 +229,7 @@
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon">Rs</span>
             <input [(ngModel)]="orderDetails.advance"
+                   [disabled]="true"
                    [ngClass]="{ 'ng-invalid ng-dirty': orderformSubmitted && f1.advance.errors }"
                    formControlName='advance'
                    id="advance" pInputText type="number"/>

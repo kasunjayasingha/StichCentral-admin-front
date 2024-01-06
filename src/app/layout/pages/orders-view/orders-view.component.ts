@@ -72,7 +72,7 @@ export class OrdersViewComponent implements OnInit {
 
   updateOrderDetails() {
     console.log("updateOrderDetails--- " + JSON.stringify(this.updateOderDetailsDto));
-    if (this.updateOderDetailsDto.orderStatus == 'COMPLETED') {
+    if (this.updateOderDetailsDto.orderStatus == 'COMPLETED' || this.updateOderDetailsDto.orderStatus == 'PAYMENT_PENDING') {
       this.processing2();
     }
     this._appoinmentService.UPDATE_ORDER_DETAILS(this.updateOderDetailsDto).subscribe((res: any) => {
@@ -123,6 +123,26 @@ export class OrdersViewComponent implements OnInit {
     }
     if (step == 'complete') {
       order.orderStatus = 'COMPLETED';
+      if (order.payment == 'HALF') {
+        order.payment = 'HALF';
+      }
+
+      this.updateOderDetailsDto = order;
+      this.updateOrderDetails();
+    }
+
+    if (step == 'complete_payment') {
+      order.orderStatus = 'COMPLETED';
+      if (order.payment == 'HALF') {
+        order.payment = 'HALF';
+      }
+
+      this.updateOderDetailsDto = order;
+      this.updateOrderDetails();
+    }
+
+    if (step == 'paymentPending') {
+      order.orderStatus = 'PAYMENT_PENDING';
       if (order.payment == 'HALF') {
         order.payment = 'HALF';
       }

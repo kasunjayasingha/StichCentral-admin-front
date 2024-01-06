@@ -80,6 +80,10 @@
           <div *ngIf="order.orderStatus == 'COMPLETED'">
             <span class="appoinment-badge status-completed">{{ order.orderStatus }}</span>
           </div>
+
+          <div *ngIf="order.orderStatus == 'PAYMENT_PENDING'">
+            <span class="appoinment-badge status-cancelled">{{ order.orderStatus }}</span>
+          </div>
         <td>
           <div *ngIf="order.clientSample != null">
             <button (click)="viewOrder(order, 'start', index)"
@@ -89,8 +93,22 @@
 
             </button>
 
+            <button (click)="viewOrder(order, 'paymentPending', index)"
+                    *ngIf="order.orderStatus == 'INPROGRESS' && order.payment == 'HALF'"
+                    icon="pi pi-money-bill"
+                    label="Payment" pButton styleClass="p-button-warning">
+
+            </button>
+
             <button (click)="viewOrder(order, 'complete', index)"
-                    *ngIf="order.orderStatus == 'INPROGRESS'"
+                    *ngIf="order.orderStatus == 'INPROGRESS' && order.payment == 'FULL'"
+                    icon="pi pi-check"
+                    label="Complete" pButton styleClass="p-button-success">
+
+            </button>
+
+            <button (click)="viewOrder(order, 'complete_payment', index)"
+                    *ngIf="order.orderStatus == 'PAYMENT_PENDING' && order.payment == 'HALF'"
                     icon="pi pi-check"
                     label="Complete" pButton styleClass="p-button-success">
 

@@ -12,7 +12,7 @@ export class AppMenuComponent implements OnInit {
 
   model: any[] = [];
   userDto: UserDTO = new UserDTO(0, '', '', '',
-    '', '', '', '', new Date(), new Date());
+    '', '', '', '', '', new Date(), new Date());
 
   constructor(public layoutService: LayoutService) {
   }

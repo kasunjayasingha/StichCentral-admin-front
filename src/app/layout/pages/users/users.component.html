@@ -29,7 +29,11 @@
       </div>
     </div>
     <div class="mt-3 lg:mt-0">
-      <button (click)="addUser=true" class="p-button-outlined mr-2" icon="pi pi-user-plus" label="New user" pButton
+      <button (click)="onClickUserCreate()" class="p-button-outlined mr-2" icon="pi pi-user-plus" label="New user"
+              pButton
+              pRipple></button>
+      <button (click)="onClickresetPassword()" class="p-button-outlined mr-2" icon="pi pi-key" label="Reset Password"
+              pButton
               pRipple></button>
     </div>
   </div>
@@ -229,6 +233,88 @@
   </form>
   <ng-template pTemplate="footer">
     <button (click)="onaddUSerSubmit()" class="p-button-outlined" icon="pi pi-check" label="Add" pButton></button>
+  </ng-template>
+
+</p-dialog>
+
+<p-dialog [(visible)]="resetPassword" [breakpoints]="{'960px': '100vw'}"
+          [contentStyle]="{'max-height': '500px', 'overflow': 'auto'}" [modal]="true"
+          [resizable]="true" [style]="{width: '60vw'}" header="Reset Password"
+          showEffect="fade">
+
+  <form [formGroup]="passwordRestForm">
+    <div class="p-fluid p-formgrid col">
+
+      <div class="row">
+        <div class="field col-12 md:col-6">
+          <div class="field p-fluid">
+            <label htmlFor="lastname2">Email</label>
+            <input [(ngModel)]="userDto.email"
+                   formControlName='email'
+                   id="materiaal" pInputText type="text"/>
+          </div>
+        </div>
+        <div class="field col-12 md:col-6">
+          <div class="field p-fluid">
+            <label htmlFor="lastname2">Username</label>
+            <input [(ngModel)]="userDto.userName"
+                   formControlName='userName'
+                   id="materiaall" pInputText type="text"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="field col-6">
+          <div class="field p-fluid">
+            <label htmlFor="lastname2">Password</label>
+            <div class="p-inputgroup">
+              <input [(ngModel)]="editpassword"
+                     [ngClass]="{ 'ng-invalid ng-dirty': passwordRestFormSubmitted && f2.password.errors }"
+                     formControlName='password'
+                     id="passwords" pInputText type="password"/>
+            </div>
+
+          </div>
+          <div *ngIf="isInvalidpassword" class="mt-1">
+            <small class="p-error">Password is invalid.</small>
+          </div>
+          <div *ngIf="userformSubmitted && f1.password.errors" class="mt-1">
+            <small *ngIf="f1.password.errors['required']" class="p-error">Password is required.</small>
+            <small *ngIf="f1.password.errors['pattern']" class="p-error">Password is invalid.</small>
+            <small *ngIf="f1.password.errors['minlength']" class="p-error">Password must be at least 4
+              characters.</small>
+          </div>
+        </div>
+
+        <div class="field col-6">
+          <div class="field p-fluid">
+            <label htmlFor="lastname2">New Password</label>
+            <div class="p-inputgroup">
+              <input [(ngModel)]="newpassword"
+                     [ngClass]="{ 'ng-invalid ng-dirty': passwordRestFormSubmitted && f2.newPassword.errors }"
+                     formControlName='newPassword'
+                     id="passwordss" pInputText type="password"/>
+            </div>
+
+          </div>
+          <div *ngIf="userformSubmitted && f1.password.errors" class="mt-1">
+            <small *ngIf="f1.password.errors['required']" class="p-error">New Password is required.</small>
+            <small *ngIf="f1.password.errors['pattern']" class="p-error">Password is invalid.</small>
+            <small *ngIf="f1.password.errors['minlength']" class="p-error">Password must be at least 4
+              characters.</small>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </form>
+  <ng-template pTemplate="footer">
+    <button (click)="onchangeUSerPasswirdSubmit()" class="p-button-outlined" icon="pi pi-check" label="Change"
+            pButton></button>
   </ng-template>
 
 </p-dialog>

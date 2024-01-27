@@ -21,10 +21,14 @@ export class UsersComponent implements OnInit {
   checked: boolean = true;
   position: string = '';
   addUser = false;
+  resetPassword = false;
   userDto: UserDTO = new UserDTO(0, '', '', '',
-    '', '', '', '', new Date(), new Date());
+    '', '', '', '', '', new Date(), new Date());
   selectedRole: any = null;
   userformSubmitted = false;
+  passwordRestFormSubmitted = false;
+  editpassword = "";
+  newpassword = "";
 
   userform = this.formBuilder.group({
     firstName: [null, Validators.required],
@@ -35,11 +39,19 @@ export class UsersComponent implements OnInit {
     password: [null, [Validators.required, Validators.minLength(4)]],
   });
 
+  passwordRestForm = this.formBuilder.group({
+    password: [null, [Validators.required, Validators.minLength(4)]],
+    newPassword: [null, [Validators.required, Validators.minLength(4)]],
+    email: [{value: null, disabled: true}],
+    userName: [{value: null, disabled: true}],
+  });
+
   roleType = [
     {name: 'Admin', code: 'ADMIN'},
     {name: 'Designer', code: 'DESIGNER'},
   ];
   userNameAlreadyExsit = false;
+  isInvalidpassword = false;
 
   constructor(
     private messageService: MessageService,
@@ -54,6 +66,10 @@ export class UsersComponent implements OnInit {
 
   get f1() {
     return this.userform.controls;
+  }
+
+  get f2() {
+    return this.passwordRestForm.controls;
   }
 
   ngOnInit(): void {
@@ -136,7 +152,7 @@ export class UsersComponent implements OnInit {
         this.userformSubmitted = false;
 
         this.userDto = new UserDTO(0, '', '', '', '', '',
-          '', '', new Date(), new Date());
+          '', '', '', new Date(), new Date());
         this.getAllUsers();
       } else {
         Swal.fire({
@@ -278,6 +294,62 @@ export class UsersComponent implements OnInit {
         console.log('I was closed by the timer')
       }
     })
+  }
+
+  onClickresetPassword() {
+    this.resetPassword = true;
+    this.userDto = JSON.parse(sessionStorage.getItem('user')!);
+  }
+
+  onClickUserCreate() {
+    this.addUser = true;
+    this.userDto = new UserDTO(0, '', '', '', '', '',
+      '', '', '', new Date(), new Date());
+  }
+
+  onchangeUSerPasswirdSubmit() {
+    this.passwordRestFormSubmitted = true;
+    if (this.passwordRestForm.invalid) {
+      return;
+    } else {
+      if (!(this.userDto.password == this.editpassword)) {
+        this.isInvalidpassword = true;
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Invalid Password'});
+        return;
+      }
+      this.userDto.newPassword = this.newpassword;
+      this._userService.UPDATE_USER(this.userDto).subscribe(result => {
+        if (result.success == true) {
+          // this.resetPassword = false;
+          // this.passwordRestForm.reset();
+          // this.passwordRestFormSubmitted = false;
+          // this.userDto = new UserDTO(0, '', '', '',
+          //   '', '', '', '', '', new Date(), new Date());
+          // this.getAllUsers();
+          this.resetPassword = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Successfully reset password',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              sessionStorage.clear();
+              window.location.href = '/login';
+            }
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Password reset Failed!',
+          });
+        }
+      });
+    }
+
   }
 
 }
